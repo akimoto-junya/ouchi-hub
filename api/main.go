@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+    gin.SetMode(gin.ReleaseMode)
     eng := gin.Default()
     eng.Use(middleware.RequestLogger)
 
