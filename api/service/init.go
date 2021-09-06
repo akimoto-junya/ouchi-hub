@@ -5,15 +5,16 @@ import (
     "fmt"
 )
 
-const MEDIA_URL = "media"
+const MEDIA_URL = "/home/raspi/media"
 
-var db *redis.Client
+var Client *redis.Client
 
 func init() {
     db := redis.NewClient(&redis.Options{
         Addr: "localhost:6379",
-        Password: "",
-        DB: 0,
     })
     fmt.Println("Redis Client is ready", db)
+    Client = db
 }
+
+

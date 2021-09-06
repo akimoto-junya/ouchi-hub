@@ -23,7 +23,7 @@ func ReadTree(path string) ([]Node, error) {
 
     var m []Node
     var result []Node
-    json.Unmarshal([]byte(out), &m)
+    json.Unmarshal([]byte(string(out)), &m)
 
     for _, item := range m {
         if item.NodeType == "directory" {
@@ -38,7 +38,7 @@ func ReadTree(path string) ([]Node, error) {
 func ReadWorks(c *gin.Context) {
     workService := service.WorkService{}
     works := workService.ReadWorks()
-    if works != nil {
+    if works == nil {
         c.JSON(http.StatusInternalServerError, gin.H{
             "message": "Can not read works",
         })
@@ -64,7 +64,16 @@ func UpdateWorks(c *gin.Context) {
 
 func ReadWork(c *gin.Context) {
     title := c.Param("title")
-    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, "*/*/", title, ""))
+    workService := service.WorkService{}
+    work := workService.ReadWork(title)
+    if work == nil {
+        c.JSON(http.StatusNotFound, gin.H{
+            "message": "Specified path is not found",
+        })
+        return
+    }
+
+    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, work.Media, work.Maker, title))
 
     if err != nil || tree == nil {
         c.JSON(http.StatusNotFound, gin.H{
@@ -81,7 +90,15 @@ func ReadWork(c *gin.Context) {
 
 func ReadWorkTree(c *gin.Context) {
     title := c.Param("title")
-    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, "*/*/", title, c.Param("tree")))
+    workService := service.WorkService{}
+    work := workService.ReadWork(title)
+    if work == nil {
+        c.JSON(http.StatusNotFound, gin.H{
+            "message": "Specified path is not found",
+        })
+        return
+    }
+    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, work.Media, work.Maker, title, c.Param("tree")))
 
     if err != nil || tree == nil {
         c.JSON(http.StatusNotFound, gin.H{
