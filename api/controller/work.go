@@ -16,7 +16,7 @@ type Node struct {
 }
 
 func ReadTree(path string) ([]Node, error) {
-    out, err := exec.Command("tree", "-J", path).Output()
+    out, err := exec.Command("tree", "-J", "-L", "1", path).Output()
     if err != nil {
         return nil, err
     }
