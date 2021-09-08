@@ -16,7 +16,7 @@ type Node struct {
 }
 
 func ReadTree(path string) ([]Node, error) {
-    out, err := exec.Command("tree", "-J", path).Output()
+    out, err := exec.Command("tree", "-J", "-L", "1", path).Output()
     if err != nil {
         return nil, err
     }
@@ -73,7 +73,7 @@ func ReadWork(c *gin.Context) {
         return
     }
 
-    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, work.Media, work.Maker, title))
+    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, work.Media, work.Group, title))
 
     if err != nil || tree == nil {
         c.JSON(http.StatusNotFound, gin.H{
@@ -98,7 +98,7 @@ func ReadWorkTree(c *gin.Context) {
         })
         return
     }
-    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, work.Media, work.Maker, title, c.Param("tree")))
+    tree, err := ReadTree(filepath.Join(service.MEDIA_URL, work.Media, work.Group, title, c.Param("tree")))
 
     if err != nil || tree == nil {
         c.JSON(http.StatusNotFound, gin.H{
