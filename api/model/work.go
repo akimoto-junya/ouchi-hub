@@ -1,8 +1,8 @@
 package model
 
 type Work struct {
-    Title string
-    Maker string
-    Media string
-    ImageURL string
+    Title string `json:"title"`
+    Maker string `json:"maker"`
+    Media string `json:"media"`
+    ImageURL string `json:"imageURL"`
 }
