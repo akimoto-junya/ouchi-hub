@@ -34,7 +34,7 @@ func (WorkService) UpdateWorks() error {
 
         work := model.Work{
             Title: dir,
-            Gaker: basedirs[dir][1],
+            Group: basedirs[dir][1],
             Media: basedirs[dir][0],
             ImageURL: "",
         }
