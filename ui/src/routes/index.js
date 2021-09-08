@@ -6,6 +6,6 @@ import Library from './Library.svelte';
 export const routes = {
   '/': Home,
   '/library': Library,
-  '/works/:id': Work,
+  '/works/:tree': Work,
   '/*/': NotFound
 };

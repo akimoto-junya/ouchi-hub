@@ -3,7 +3,7 @@
   import {isMobile, isListView} from '~/stores';
   import Work from '~/components/Work.svelte';
 
-  let works = []
+  let works = [];
 
   const mediaTypeColor = {
     "Image": "#14c369",

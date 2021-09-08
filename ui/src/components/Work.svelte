@@ -1,7 +1,7 @@
 <script>
   import {push} from 'svelte-spa-router';
   export let title;
-  export let maker;
+  export let group;
   export let media;
   export let mediaTypeColor;
   export let imageURL;
@@ -14,7 +14,7 @@
   <div class="work-detail">
     <div class="title">{title}</div>
     <div class="supplement" style="--media-type-color: {mediaTypeColor}">
-      <div class="maker">{maker}</div>
+      <div class="group">{group}</div>
       <div class="media-type">{media}</div>
     </div>
   </div>
@@ -79,7 +79,7 @@
     max-height: 18px;
   }
 
-  .maker {
+  .group {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
