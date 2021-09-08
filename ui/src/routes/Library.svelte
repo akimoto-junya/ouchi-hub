@@ -21,7 +21,7 @@
   };
 
   onMount(async () => {
-    const res = await fetch("http://192.168.1.100:3000/api/v1/works", {
+    const res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
       mode: "cors",
     });
     works = await res.json();

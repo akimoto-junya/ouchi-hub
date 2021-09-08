@@ -2,12 +2,16 @@ import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import alias from '@rollup/plugin-alias';
+import replace from '@rollup/plugin-replace';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import dotenv from 'dotenv';
 
 const production = !process.env.ROLLUP_WATCH;
 const path = require('path');
+
+dotenv.config();
 
 function serve() {
   let server;
@@ -53,6 +57,12 @@ export default {
       entries: {
         '~': path.resolve(__dirname, 'src'),
       }
+    }),
+
+    replace({
+      preventAssignment: true,
+      API_ADDRESS: JSON.stringify(process.env.API_ADDRESS),
+      MEDIA_ADDRESS: JSON.stringify(process.env.MEDIA_ADDRESS),
     }),
 
     // If you have external dependencies installed from

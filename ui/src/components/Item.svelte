@@ -2,10 +2,12 @@
   import {push} from 'svelte-spa-router';
   export let name;
   export let type;
+  export let fileType;
+  export let imageURL;
 </script>
 
 <li on:click class="item">
-  <img alt="{type}" class="item-type" />
+  <img src={imageURL} alt="{type}" loading="lazy" class="item-type" />
   <div class="item-detail">
     <div class="name">{name}</div>
     <div class="supplement">
@@ -17,7 +19,7 @@
   .item {
     display: flex;
     position: relative;
-    height: 80px;
+    height: 70px;
     width: auto;
     cursor: pointer;
     background-color: #fff;
@@ -32,9 +34,9 @@
 
   .item-type {
     flex-shrink: 0;
-    width: 60px;
-    height: 60px;
-    margin: 10px;
+    width: 50px;
+    height: 50px;
+    margin: auto 10px;
     overflow: hidden;
     object-fit: contain;
   }

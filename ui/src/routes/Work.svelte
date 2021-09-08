@@ -13,27 +13,59 @@
   let isLoaded = false;
   $: loadComponent(params.tree);
 
+  const getSourceURL = (name) => {
+    return [`http://${MEDIA_ADDRESS}`, media, group, $location.replace('/works/', ''), name].join('/');
+  };
+  const setSource = (sourceName) => {
+    return () => {
+      $source = getSourceURL(sourceName);
+    };
+  };
+
   async function loadComponent() {
     isLoaded = false;
-    let res = await fetch("http://192.168.1.100:3000/api/v1/works/" + params.tree, {
+    let res = await fetch(`http://${API_ADDRESS}/api/v1/works/` + params.tree, {
         mode: "cors",
     });
     res = await res.json();
     name = res["title"];
     media = res["media"];
     group = res["group"];
-
     res = res["tree"];
+
+    const patterns = {
+      "&amp;":"&", "&gt;": ">", "&lt;": "<", "&quot;": '"',
+    };
+    const getFileType = (name) => {
+      const fileType = {
+        "txt": "text", "mp3": "audio", "m4a": "audio", "wav": "audio",
+        "mp4": "video", "jpeg": "image", "jpg": "image", "png": "image",
+      };
+      return fileType[name.split('.').pop()] || "directory";
+    };
+
+    res.forEach(r => {
+      r["fileType"] = getFileType(r["name"]);
+      r["name"] = r["name"].replace(/&(lt|gt|amp|quot);/g, m => {
+            return patterns[m];
+      });
+    });
+
     files = res.filter(r => r["type"] == "file");
     dirs = res.filter(r => r["type"] == "directory");
+
+
+    const getFileImageURL = (name) => {
+      return "images/" + getFileType(name) + ".png";
+    };
+
+    files.forEach(file => {
+      file["imageURL"] = (file["fileType"] === "image")? getSourceURL(file["name"]) : getFileImageURL(file["name"]);
+    });
+    dirs.forEach(dir => dir["imageURL"] = "images/directory.png");
     isLoaded = true;
   }
 
-  const setSource = (sourceName) => {
-    return () => {
-      $source = ["http://192.168.1.100/media", media, group, $location.replace('/works/', ''), sourceName].join('/');
-    };
-  };
 </script>
 
 {#if isLoaded}
