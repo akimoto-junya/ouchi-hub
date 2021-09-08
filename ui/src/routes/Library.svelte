@@ -1,16 +1,14 @@
 <script>
+  import {onMount} from 'svelte'
   import {isMobile, isListView} from '~/stores';
   import Work from '~/components/Work.svelte';
-  let items = [
-    {title: "item", maker: "maker", mediaType: "Audio", image: "", path: "123"},
-    {title: "item", maker: "maker", mediaType: "Video", image: "", path: "456"},
-    {title: "item", maker: "maker", mediaType: "Image", image: "", path: "789"},
-    {title: "item", maker: "maker", mediaType: "Other", image: "", path: "1011"},
-  ];
+
+  let works = []
 
   const mediaTypeColor = {
     "Image": "#14c369",
-    "Audio": "#ff9c1e",
+    "Music": "#ff9c1e",
+    "ASMR": "#ff9c1e",
     "Video": "#ef489b",
   };
 
@@ -18,13 +16,21 @@
     return mediaTypeColor[t] || "#9e9e9e";
   };
 
-  items.map(item => item["mediaTypeColor"] = getMediaTypeColor(item.mediaType));
+  onMount(async () => {
+    const res = await fetch("http://192.168.1.100:3000/api/v1/works", {
+      mode: "cors",
+    });
+    works = await res.json();
+    works = works["works"]
+    works.map(work => work["mediaTypeColor"] = getMediaTypeColor(work["media"]));
+  })
+
 </script>
 
 <div>
   <ol class="{$isMobile? 'group-mobile' : 'group'}">
-  {#each items as item}
-    <Work {...item} />
+  {#each works as work}
+    <Work {...work} />
   {/each}
   <ol>
 </div>

@@ -2,20 +2,20 @@
   import {push} from 'svelte-spa-router';
   export let title;
   export let maker;
-  export let mediaType;
+  export let media;
   export let mediaTypeColor;
-  export let image;
-  export let path;
+  export let imageURL;
+
 
 </script>
 
-<li class="work" on:click={push("/works/" + path)}>
-  <img src={image} alt="{title}" class="thumbnail" />
+<li class="work" on:click={push("/works/" + title)}>
+  <img src={imageURL} alt="{title}" class="thumbnail" />
   <div class="work-detail">
     <div class="title">{title}</div>
     <div class="supplement" style="--media-type-color: {mediaTypeColor}">
       <div class="maker">{maker}</div>
-      <div class="media-type">{mediaType}</div>
+      <div class="media-type">{media}</div>
     </div>
   </div>
 </li>
