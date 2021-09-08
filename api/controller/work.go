@@ -84,6 +84,8 @@ func ReadWork(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{
         "title": title,
+        "media": work.Media,
+        "group": work.Group,
         "tree": tree,
     })
 }
@@ -109,6 +111,8 @@ func ReadWorkTree(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{
         "title": title,
+        "media": work.Media,
+        "group": work.Group,
         "tree": tree,
     })
 }
