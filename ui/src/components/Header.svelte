@@ -1,12 +1,19 @@
 <script>
+  import {onMount, onDestroy} from 'svelte';
   import Drawer from './Drawer.svelte';
+  import {showDrawer, isViewer, disabledHeader} from '~/stores.js';
 
   let displayName = "";
-  let showDrawer = false;
+
+  $: if ($isViewer) {
+    setTimeout(() => $disabledHeader = true, 2000);
+  }
+  onDestroy(() => $disabledHeader = false);
 
 </script>
 
-<div class="container">
+<div class="container {$disabledHeader? 'hidden': ''}">
+  <div class="menu" on:click={() => {$showDrawer = true;}} ></div>
   <div class="display-name">{displayName}</div>
   <div class="layout"></div>
 </div>
@@ -14,9 +21,12 @@
 
 <style>
   .container {
-    display: flex;
+    flex-shrink: 0;
     height: 40px;
     background: rgb(255, 0, 0);
+  }
+  .hidden {
+    display: none;
   }
 
   .menu {

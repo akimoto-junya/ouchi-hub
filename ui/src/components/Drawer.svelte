@@ -1,28 +1,27 @@
 <script>
   import {fade} from 'svelte/transition';
-  let showDrawer;
+  import {showDrawer} from '~/stores.js';
   let isDisabled;
 
   const openDrawer = () => {
-    showDrawer = true;
     isDisabled = false;
   };
   const closeDrawer = () => {
-    showDrawer = false;
     isDisabled = false;
+    $showDrawer = false;
   };
 </script>
 
-<div class="menu" on:click={openDrawer}></div>
+{#if $showDrawer}
 <div class="drawer {isDisabled? 'is-disabled' : showDrawer? 'is-opened' : 'is-closed'}">
   <div class="close" on:click={closeDrawer}>x</div>
 </div>
-{#if showDrawer}
 <div class="overlay" transition:fade="{{duration:200}}"></div>
 {/if}
 
 <style>
   .drawer {
+    top: 0;
     position: fixed;
     width: 250px;
     height: 100%;

@@ -1,6 +1,7 @@
 <script>
   import {onMount} from 'svelte'
   import {isMobile, isListView} from '~/stores';
+  import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
   let works = [];
@@ -34,6 +35,7 @@
 
 </script>
 
+<Header />
 <div>
   <ol class="{$isMobile? 'group-mobile' : 'group'}">
   {#each works as work}

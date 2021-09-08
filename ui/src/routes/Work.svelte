@@ -3,6 +3,7 @@
   import {pop, push, location} from "svelte-spa-router";
   import {isMobile, source} from '~/stores';
   import Item from '~/components/Item.svelte';
+  import Header from '~/components/Header.svelte';
   export let params = {};
   let name = "";
   let media = "";
@@ -20,6 +21,13 @@
     return () => {
       $source = getSourceURL(sourceName);
     };
+  };
+
+  const needsViewer = (fileType) => {
+    const needsViewerType = {
+      "image": true, "video": true,
+    };
+    return needsViewerType[fileType] || false;
   };
 
   async function loadComponent() {
@@ -68,6 +76,7 @@
 
 </script>
 
+<Header />
 {#if isLoaded}
 <div>
   <h1>{name}</h1>
@@ -78,7 +87,11 @@
     <Item {...directory} on:click={push($location+"%2F"+directory["name"])}/>
   {/each}
   {#each files as file}
-    <Item {...file} on:click={setSource(file["name"])} />
+    {#if needsViewer(file["fileType"])}
+      <Item {...file} on:click={push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
+    {:else}
+      <Item {...file} on:click={setSource(file["name"])} />
+    {/if}
   {/each}
   </ol>
 </div>

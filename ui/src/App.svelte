@@ -2,8 +2,7 @@
   import Router from 'svelte-spa-router';
   import {routes} from '~/routes';
   import {isMobile} from '~/stores';
-  import MediaViewer from '~/components/MediaViewer/MediaViewer.svelte';
-  import Header from '~/components/Header.svelte';
+  import AudioPlayer from '~/components/AudioPlayer.svelte';
 
   let screenWidth;
 
@@ -16,16 +15,16 @@
 <svelte:window bind:innerWidth={screenWidth} />
 
 <div class="container">
-  <Header />
-  <MediaViewer>
+  <AudioPlayer>
     <Router {routes} />
-  </MediaViewer>
-  <!-- <audio controls src="./test.mp3" width="100%"></audio> -->
+  </AudioPlayer>
 </div>
 
 <style>
   .container {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    height: 100%;
   }
 </style>
