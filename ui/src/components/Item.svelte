@@ -1,30 +1,23 @@
 <script>
   import {push} from 'svelte-spa-router';
-  export let title;
-  export let group;
-  export let media;
-  export let mediaTypeColor;
-  export let imageURL;
-
-
+  export let name;
+  export let type;
 </script>
 
-<li class="work" on:click={push("/works/" + title)}>
-  <img src={imageURL} alt="{title}" class="thumbnail" />
-  <div class="work-detail">
-    <div class="title">{title}</div>
-    <div class="supplement" style="--media-type-color: {mediaTypeColor}">
-      <div class="group">{group}</div>
-      <div class="media-type">{media}</div>
+<li on:click class="item">
+  <img alt="{type}" class="item-type" />
+  <div class="item-detail">
+    <div class="name">{name}</div>
+    <div class="supplement">
     </div>
   </div>
 </li>
 
 <style>
-  .work {
+  .item {
     display: flex;
     position: relative;
-    height: 100px;
+    height: 80px;
     width: auto;
     cursor: pointer;
     background-color: #fff;
@@ -33,27 +26,27 @@
     overflow: hidden;
   }
 
-  .work:last-of-type {
+  .item:last-of-type {
     border-bottom: none;
   }
 
-  .thumbnail {
+  .item-type {
     flex-shrink: 0;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin: 10px;
     overflow: hidden;
     object-fit: contain;
   }
 
-  .work-detail {
+  .item-detail {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: 10px;
   }
 
-  .title {
+  .name {
     display: -webkit-box;
     flex-shrink: 0;
     flex-basis: 36px;
@@ -76,23 +69,5 @@
     margin: 20px 10px 10px 10px;
     font-size: 14px;
     max-height: 18px;
-  }
-
-  .group {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 30vw;
-  }
-
-  .media-type {
-    flex-shrink: 0;
-    color: #fff;
-    background: var(--media-type-color);
-    font-weight: bold;
-    vertical-align: middle;
-    border-radius: 3px;
-    padding: 0 3px;
-    margin-left: auto;
   }
 </style>
