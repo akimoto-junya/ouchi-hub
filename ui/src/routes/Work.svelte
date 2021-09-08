@@ -4,7 +4,9 @@
   import {isMobile, source} from '~/stores';
   import Item from '~/components/Item.svelte';
   export let params = {};
-  let name = "Work";
+  let name = "";
+  let media = "";
+  let group = "";
   let files = [];
   let dirs = [];
 
@@ -17,6 +19,9 @@
         mode: "cors",
     });
     res = await res.json();
+    name = res["title"];
+    media = res["media"];
+    group = res["group"];
 
     res = res["tree"];
     files = res.filter(r => r["type"] == "file");
@@ -26,14 +31,14 @@
 
   const setSource = (sourceName) => {
     return () => {
-      $source = "192.168.1.100/media/"+ sourceName;
+      $source = ["http://192.168.1.100/media", media, group, $location.replace('/works/', ''), sourceName].join('/');
     };
   };
 </script>
 
 {#if isLoaded}
 <div>
-  <h1>Hello {name}!</h1>
+  <h1>{name}</h1>
   <p>{params.tree}</p>
   <button on:click={pop}>prev</button>
   <ol class="{$isMobile? 'group-mobile' : 'group'}">

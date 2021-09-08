@@ -3,7 +3,9 @@
 </script>
 
 <div>
-  <audio src={$source} controls autoplay />
+  {#if $source !== ""}
+    <video src={$source} controls autoplay />
+  {/if}
   <slot></slot>
 </div>
 

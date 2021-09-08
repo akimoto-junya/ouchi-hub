@@ -5,15 +5,19 @@
 
   let works = [];
 
-  const mediaTypeColor = {
-    "Image": "#14c369",
-    "Music": "#ff9c1e",
-    "ASMR": "#ff9c1e",
-    "Video": "#ef489b",
-  };
+  const color = [
+    "#14c369", "#ff9c1e", "#1c75bc", "#ef489b",
+    "#665990", "#9e9e9e"
+  ];
 
+  const mediaTypeColor = {};
+  let i = 0;
   const getMediaTypeColor = (t) => {
-    return mediaTypeColor[t] || "#9e9e9e";
+    if (t in mediaTypeColor === false) {
+      mediaTypeColor[t] = color[i % color.length];
+      i++;
+    }
+    return mediaTypeColor[t];
   };
 
   onMount(async () => {
@@ -23,6 +27,9 @@
     works = await res.json();
     works = works["works"]
     works.map(work => work["mediaTypeColor"] = getMediaTypeColor(work["media"]));
+    works.sort((a, b) => a["title"] < b["title"]? -1 : 1);
+    works.sort((a, b) => a["group"] < b["group"]? -1 : 1);
+    works.sort((a, b) => a["media"] < b["media"]? -1 : 1);
   })
 
 </script>
