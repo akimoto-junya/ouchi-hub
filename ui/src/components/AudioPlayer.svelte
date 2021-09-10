@@ -296,11 +296,12 @@
 
   .name-mini-wrapper {
     height: 20px;
+    width: calc(100% - 100px);
     margin: 20px 20px 0 20px;
   }
 
   .name-mini {
-    width: calc(100% - 60px);
+    width: 100%;
     font-weight: bold;
     text-overflow: ellipsis;
     overflow: hidden;
