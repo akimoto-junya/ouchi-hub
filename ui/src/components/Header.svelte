@@ -51,6 +51,7 @@
     width: 100%;
     flex-shrink: 0;
     height: 40px;
+    overflow: hidden;
     background: rgb(255, 0, 0);
   }
 

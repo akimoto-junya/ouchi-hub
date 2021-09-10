@@ -86,36 +86,39 @@
 
 </script>
 
+<div>
 <Header />
-{#if isLoaded}
-<div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
-  <h1>{name}</h1>
-  <p>{params.tree}</p>
-  <button on:click={pop}>prev</button>
-  <ol class="{$isMobile? 'group-mobile' : 'group'}">
-  {#each dirs as directory}
-    <Item {...directory} on:click={push($location+"%2F"+directory["name"])}/>
-  {/each}
-  {#each files as file}
-    {#if needsViewer(file["fileType"])}
-      <Item {...file} on:click={push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
-    {:else}
-      <Item {...file} on:click={setSources(file)} />
-    {/if}
-  {/each}
-  </ol>
+  {#if isLoaded}
+  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
+    <h1>{name}</h1>
+    <p>{params.tree}</p>
+    <button on:click={pop}>prev</button>
+    <ol class="{$isMobile? 'group-mobile' : 'group'}">
+    {#each dirs as directory}
+      <Item {...directory} on:click={push($location+"%2F"+directory["name"])}/>
+    {/each}
+    {#each files as file}
+      {#if needsViewer(file["fileType"])}
+        <Item {...file} on:click={push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
+      {:else}
+        <Item {...file} on:click={setSources(file)} />
+      {/if}
+    {/each}
+    </ol>
+  </div>
+  {/if}
 </div>
-{/if}
 
 <style>
   .container {
     position: absolute;
     width: 100%;
     top: 40px;
+    bottom: 0;
+    overflow-y: scroll;
   }
 
   .with-mini-player {
-    overflow-y: scroll;
     bottom: 60px;
   }
 

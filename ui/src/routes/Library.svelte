@@ -35,13 +35,15 @@
 
 </script>
 
-<Header />
-<div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
-  <ol class="{$isMobile? 'group-mobile' : 'group'}">
-  {#each works as work}
-    <Work {...work} />
-  {/each}
-  <ol>
+<div>
+  <Header />
+  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
+    <ol class="{$isMobile? 'group-mobile' : 'group'}">
+    {#each works as work}
+      <Work {...work} />
+    {/each}
+    <ol>
+  </div>
 </div>
 
 <style>
@@ -49,10 +51,11 @@
     position: absolute;
     width: 100%;
     top: 40px;
+    bottom: 0;
+    overflow-y: scroll;
   }
 
   .with-mini-player {
-    overflow-y: scroll;
     bottom: 60px;
   }
 

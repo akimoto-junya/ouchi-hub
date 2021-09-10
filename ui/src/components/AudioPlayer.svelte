@@ -23,32 +23,27 @@
 
 </script>
 
-<div class="container">
-  <slot></slot>
-  {#if !$isViewer && source !== ""}
-    <audio style="display: none;" src={source} controls autoplay bind:this={audio} bind:ended={needsNext} />
-    {#if !$needsMiniPlayer}
-      <div class="{$isMobile? 'player-mobile' : 'player'}"
-           transition:slide={{y:-452, duration:200}} >
-        <div class="hidden-button" on:click={() => $needsMiniPlayer = true} >下</div>
-        <img class="album-art" src="https://cdn.pixabay.com/photo/2021/08/29/08/49/petit-minou-lighthouse-6582717_960_720.jpg" alt="ここにがぞうがはいる"/>
-        <div class="controls">
-          <button on:click={() => i++}>{stateName}</button>
-        </div>
+<slot></slot>
+{#if !$isViewer && source !== ""}
+  <audio style="display: none;" src={source} controls autoplay bind:this={audio} bind:ended={needsNext} />
+  {#if !$needsMiniPlayer}
+    <div class="{$isMobile? 'player-mobile' : 'player'}"
+         transition:slide={{y:-452, duration:200}} >
+      <div class="hidden-button" on:click={() => $needsMiniPlayer = true} >下</div>
+      <img class="album-art" src="https://cdn.pixabay.com/photo/2021/08/29/08/49/petit-minou-lighthouse-6582717_960_720.jpg" alt="ここにがぞうがはいる"/>
+      <div class="controls">
+        <button on:click={() => i++}>{stateName}</button>
       </div>
-    {:else}
-      <div class="mini-player" on:click={() => $needsMiniPlayer = false}></div>
-    {/if}
+    </div>
+  {:else}
+    <div class="mini-player" on:click={() => $needsMiniPlayer = false}
+        transition:slide={{y:60, duration:200}}
+        >
+    </div>
   {/if}
-</div>
+{/if}
 
 <style>
-  .container {
-    flex: 1;
-    flex-shrink: 0;
-    overflow: auto;
-  }
-
   .player {
     position: fixed;
     right: 12px;
@@ -58,6 +53,7 @@
     background : blue;
     border-radius: 5px;
     overflow: hidden;
+
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.33);
     z-index: 2000;
   }
@@ -104,7 +100,7 @@
     bottom: 0;
     left: 0;
     background: blue;
-    height: 50px;
+    height: 60px;
     width: 100%;
   }
 
