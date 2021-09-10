@@ -300,7 +300,7 @@
   }
 
   .name-mini {
-    width: 100%;
+    width: calc(100% - 60px);
     font-weight: bold;
     text-overflow: ellipsis;
     overflow: hidden;
