@@ -9,7 +9,7 @@
 
 </script>
 
-<li class="work" on:click={push("/works/" + title)}>
+<li class="work" on:click>
   <img src={imageURL} alt="{title}" class="thumbnail" />
   <div class="work-detail">
     <div class="title">{title}</div>

@@ -38,7 +38,7 @@
 {#if !disabledHeader}
 <div class="container" out:slide="{{y:-40, duration: $isViewer && disabledHeader? 500 : 0}}">
   <div class="menu" on:click={() => {$showDrawer = true}} ></div>
-  <div class="display-name">{displayName}</div>
+  <slot></slot>
   <div class="layout"></div>
 </div>
 {/if}
@@ -46,13 +46,13 @@
 
 <style>
   .container {
+    display: flex;
     position: fixed;
     z-index: 500;
     width: 100%;
-    flex-shrink: 0;
     height: 40px;
     overflow: hidden;
-    background: rgb(255, 0, 0);
+    background: orange;
   }
 
   .menu {
@@ -61,10 +61,6 @@
     background-image: url("https://iconbox.fun/wp/wp-content/uploads/bars_24.png");
     background-size: contain;
     cursor: pointer;
-  }
-
-  .display-name {
-
   }
 
   .layout {

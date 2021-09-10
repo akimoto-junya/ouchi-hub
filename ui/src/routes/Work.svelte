@@ -15,8 +15,16 @@
   $: loadComponent(params.tree);
 
   const getSourceURL = (name) => {
+    const patterns = {
+      "#": "%23",
+    };
+    name = name.replace(/#/g, m => {
+      return patterns[m];
+    });
+
     return [`http://${MEDIA_ADDRESS}`, media, group, $location.replace('/works/', ''), name].join('/');
   };
+
   const setSources = (file) => {
     return () => {
       let res = files.filter(f => f["fileType"] === file["fileType"]);
@@ -87,12 +95,15 @@
 </script>
 
 <div>
-<Header />
+<Header>
+  <div class="prev-wrapper" on:click={pop}>
+    <div class="prev">＜&nbsp;&nbsp;戻る</div>
+  </div>
+</Header>
   {#if isLoaded}
   <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
     <h1>{name}</h1>
     <p>{params.tree}</p>
-    <button on:click={pop}>prev</button>
     <ol class="{$isMobile? 'group-mobile' : 'group'}">
     {#each dirs as directory}
       <Item {...directory} on:click={push($location+"%2F"+directory["name"])}/>
@@ -116,6 +127,20 @@
     top: 40px;
     bottom: 0;
     overflow-y: scroll;
+  }
+
+  .prev-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .prev {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
   }
 
   .with-mini-player {

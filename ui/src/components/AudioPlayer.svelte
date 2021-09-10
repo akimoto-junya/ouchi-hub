@@ -1,16 +1,20 @@
 <script>
   import {slide} from 'svelte/transition';
-  import {sources, isViewer, isMobile, needsMiniPlayer} from '~/stores.js';
-  let needsRepeat = [...Array(3).keys()];
+  import {sources, isViewer, isMobile, needsMiniPlayer, albumArt} from '~/stores.js';
 
+  /* リピート */
+  let needsRepeat = [...Array(3).keys()];
   let i = 0;
   $: state = needsRepeat[i % needsRepeat.length];
-  $: stateName = state === 0? "NoRepeat": state === 1? "OneRepeat" : "Repeat";
+  $: repeatState = state === 0? "NoRepeat": state === 1? "OneRepeat" : "Repeat";
 
+  /* 再生する曲 */
   let audio;
   $: queue = $sources;
   $: source = queue[0] !== undefined? queue[0]["source"]: "";
+  $: name = queue[0] !== undefined? queue[0]["name"] : "";
 
+  /* 次の曲に行く動作 */
   let needsNext = false;
   $: if (needsNext) {
     if (state === 1) {
@@ -21,24 +25,91 @@
     }
   }
 
+  /* 再生時間 */
+  let time;
+  let duration;
+  $: currentTime = (time / duration) || 0;
+
+  const format = (seconds) => {
+      if (isNaN(seconds)) return "";
+      const m = Math.floor(seconds / 60);
+      seconds = Math.floor(seconds % 60);
+      return `${m}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  /* シークバー */
+  let seekBarWidth;
+  let progress;
+  const seekTime = (e) => {
+    time = duration * e.offsetX / progress.clientWidth;
+  };
+
+  /* 操作 */
+  const prev = () => {
+    if (state === 1) {
+      time = 0;
+    } else if (state == 2 || !queue[queue.length - 1]["end"]) {
+      const last = queue.pop();
+      queue = [last, ...queue];
+    }
+  };
+
+  const next = () => {
+    if (state === 1) {
+      time = 0;
+    } else if (state === 2 || !queue[0]["end"]) {
+      const first = queue.shift();
+      queue = [...queue, first];
+    }
+  };
+
+  const play = () => {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  };
+
 </script>
 
 <slot></slot>
 {#if !$isViewer && source !== ""}
-  <audio style="display: none;" src={source} controls autoplay bind:this={audio} bind:ended={needsNext} />
+  <audio style="display: none;" src={source} controls autoplay
+         bind:currentTime={time}
+         bind:duration={duration}
+         bind:this={audio}
+         bind:ended={needsNext} />
   {#if !$needsMiniPlayer}
     <div class="{$isMobile? 'player-mobile' : 'player'}"
          transition:slide={{y:-452, duration:200}} >
       <div class="hidden-button" on:click={() => $needsMiniPlayer = true} >下</div>
-      <img class="album-art" src="https://cdn.pixabay.com/photo/2021/08/29/08/49/petit-minou-lighthouse-6582717_960_720.jpg" alt="ここにがぞうがはいる"/>
-      <div class="controls">
-        <button on:click={() => i++}>{stateName}</button>
+      <img class="album-art" src={$albumArt} alt=""/>
+      <div class="controls-wrapper">
+        <div class="seek-bar-wrapper">
+          <div class="current-time">{format(time)}</div>
+          <progress class="seek-bar" value={currentTime}
+              on:click={seekTime}
+              bind:this={progress}
+          >
+          </progress>
+          <div class="duration">{format(duration)}</div>
+        </div>
+        <div class="name-wrapper"><div class="name">{name}</div></div>
+        <div class="controls">
+          <div class="shaffle-button"></div>
+          <div class="prev-button" on:click={prev}>&lt;</div>
+          <div class="play-button" on:click={play}>o</div>
+          <div class="next-button" on:click={next}>&gt;</div>
+          <div class="repeat-button" on:click={()=>i++}>r</div>
+        </div>
       </div>
     </div>
   {:else}
-    <div class="mini-player" on:click={() => $needsMiniPlayer = false}
-        transition:slide={{y:60, duration:200}}
-        >
+    <div class="mini-player"
+        on:click={() => $needsMiniPlayer = false}
+        transition:slide={{y:60, duration:200}}>
+      <progress class="seek-bar-mini" value={currentTime}></progress>
     </div>
   {/if}
 {/if}
@@ -50,39 +121,131 @@
     bottom: 0;
     height: 452px;
     width: 322px;
-    background : blue;
+    background : #393939;
     border-radius: 5px;
     overflow: hidden;
-
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.33);
     z-index: 2000;
   }
 
   .album-art {
+    position: absolute;
     object-fit: contain;
-    height: 100%;
+    height: calc(100% - 200px);
     width: 100%;
+    max-height: calc(100% - 200px);
+    max-width: 100%;
     margin: auto;
   }
 
-
   .hidden-button {
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
-    height: 30px;
-    width: 30px;
+    height: 50px;
+    width: 50px;
     margin: 10px;
     cursor: pointer;
     background: orange;
+    z-index: 2050;
   }
 
-  .controls {
+  .controls-wrapper {
+    display: flex;
     position: absolute;
+    flex-direction: column;
+    object-fit: contain;
     height: 200px;
     width: 100%;
     bottom: 0;
     background: white;
+  }
+
+  .name-wrapper {
+    height: 20px;
+    margin: 10px;
+  }
+
+  .name {
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .seek-bar-wrapper {
+    display: flex;
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  .seek-bar {
+    flex: 1;
+    height: 5px;
+    margin: auto 0;
+    border-radius: 2px;
+    color: orange;
+    background-color: #cccccc;
+    cursor: pointer;
+  }
+
+  .seek-bar::-webkit-progress-value {
+    background-color: orange;
+  }
+
+  .seek-bar::-webkit-progress-var {
+    background-color: #cccccc;
+  }
+
+  .seek-bar::-moz-progress-bar {
+    background-color: orange;
+  }
+
+  .current-time {
+    margin: 0 10px 0 10px;
+    font-size: 11px;
+  }
+
+  .duration {
+    margin: 0 10px 0 10px;
+    font-size: 11px;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .shaffle-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .prev-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .play-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .next-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  .repeat-button {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
   }
 
   .player-mobile {
@@ -91,7 +254,7 @@
     right: 0;
     height: 100%;
     width: 100%;
-    background: blue;
+    background : #393939;
     z-index: 2000;
   }
 
@@ -99,10 +262,30 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    background: blue;
+    background: #ffffff;
     height: 60px;
     width: 100%;
+    cursor: pointer;
   }
 
+  .seek-bar-mini {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: #ffffff;
+  }
+
+  .seek-bar-mini::-webkit-progress-value {
+    background-color: orange;
+  }
+
+  .seek-bar-mini::-webkit-progress-bar {
+    background-color: #ffffff;
+  }
+
+  .seek-bar-mini::-moz-progress-bar {
+    background-color: orange;
+  }
 </style>
 

@@ -1,6 +1,7 @@
 <script>
   import {onMount} from 'svelte'
-  import {isMobile, isListView, needsMiniPlayer} from '~/stores';
+  import {push} from 'svelte-spa-router';
+  import {isMobile, isListView, needsMiniPlayer, albumArt} from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
@@ -27,7 +28,7 @@
     });
     works = await res.json();
     works = works["works"]
-    works.map(work => work["mediaTypeColor"] = getMediaTypeColor(work["media"]));
+    works.forEach(work => work["mediaTypeColor"] = getMediaTypeColor(work["media"]));
     works.sort((a, b) => a["title"] < b["title"]? -1 : 1);
     works.sort((a, b) => a["group"] < b["group"]? -1 : 1);
     works.sort((a, b) => a["media"] < b["media"]? -1 : 1);
@@ -36,11 +37,17 @@
 </script>
 
 <div>
-  <Header />
+  <Header>
+    <div class="display"><div>ライブラリ</div></div>
+  </Header>
   <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
     <ol class="{$isMobile? 'group-mobile' : 'group'}">
     {#each works as work}
-      <Work {...work} />
+      <Work {...work}  on:click={() => {
+          $albumArt = work.imageURL;
+          push("/works/" + work.title);
+        }}
+      />
     {/each}
     <ol>
   </div>
@@ -53,6 +60,16 @@
     top: 40px;
     bottom: 0;
     overflow-y: scroll;
+  }
+
+  .display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    margin-left: 10px;
+    font-weight: bold;
+    color: #ffffff;
   }
 
   .with-mini-player {
