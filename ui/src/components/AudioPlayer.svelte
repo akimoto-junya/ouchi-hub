@@ -1,15 +1,18 @@
 <script>
   import {slide} from 'svelte/transition';
-  import {sources, isViewer, isMobile, needsMiniPlayer, albumArt} from '~/stores.js';
+  import {sources, isPaused, isViewer, isMobile, needsMiniPlayer, albumArt} from '~/stores.js';
+
+  let audio;
 
   /* リピート */
   let needsRepeat = [...Array(3).keys()];
-  let i = 0;
+  let i = 2;
   $: state = needsRepeat[i % needsRepeat.length];
-  $: repeatState = state === 0? "NoRepeat": state === 1? "OneRepeat" : "Repeat";
+  $: repeatState = state === 0? "images/no-repeat.png":
+    state === 1? "images/one-repeat.png" : "images/repeat.png";
+  $: playState = $isPaused? "images/play.png" : "images/stop.png";
 
   /* 再生する曲 */
-  let audio;
   $: queue = $sources;
   $: source = queue[0] !== undefined? queue[0]["source"]: "";
   $: name = queue[0] !== undefined? queue[0]["name"] : "";
@@ -75,15 +78,16 @@
 
 <slot></slot>
 {#if !$isViewer && source !== ""}
-  <audio style="display: none;" src={source} controls autoplay
+  <audio style="display: none;" src={source} autoplay
          bind:currentTime={time}
          bind:duration={duration}
          bind:this={audio}
+         bind:paused={$isPaused}
          bind:ended={needsNext} />
   {#if !$needsMiniPlayer}
     <div class="{$isMobile? 'player-mobile' : 'player'}"
          transition:slide={{y:-452, duration:200}} >
-      <div class="hidden-button" on:click={() => $needsMiniPlayer = true} >下</div>
+      <img src="images/down-arrow.png" class="hidden-button" on:click={() => $needsMiniPlayer = true} />
       <img class="album-art" src={$albumArt} alt=""/>
       <div class="controls-wrapper">
         <div class="seek-bar-wrapper">
@@ -97,18 +101,21 @@
         </div>
         <div class="name-wrapper"><div class="name">{name}</div></div>
         <div class="controls">
-          <div class="shaffle-button"></div>
-          <div class="prev-button" on:click={prev}>&lt;</div>
-          <div class="play-button" on:click={play}>o</div>
-          <div class="next-button" on:click={next}>&gt;</div>
-          <div class="repeat-button" on:click={()=>i++}>r</div>
+          <div class="empty"></div>
+          <img src="images/prev.png" class="prev-button" on:click={prev} />
+          <img src={playState} class="play-button" on:click={play} />
+          <img src="images/next.png" class="next-button" on:click={next} />
+          <img src={repeatState} class="repeat-button" on:click={()=>i++} />
         </div>
       </div>
     </div>
   {:else}
-    <div class="mini-player"
-        on:click={() => $needsMiniPlayer = false}
-        transition:slide={{y:60, duration:200}}>
+    <div class="mini-player" transition:slide={{y:60, duration:200}}>
+      <div class="mini-player-content" on:click={() => $needsMiniPlayer = false}>
+        <img class="album-art-mini" src={$albumArt} alt=""/>
+        <div class="name-mini-wrapper"><div class="name-mini">{name}</div></div>
+      </div>
+      <img src={playState} class="play-button-mini" on:click={play} />
       <progress class="seek-bar-mini" value={currentTime}></progress>
     </div>
   {/if}
@@ -142,11 +149,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     margin: 10px;
     cursor: pointer;
-    background: orange;
     z-index: 2050;
   }
 
@@ -216,12 +222,12 @@
   .controls {
     display: flex;
     justify-content: space-between;
+    margin: 20px;
   }
 
-  .shaffle-button {
+  .empty {
     width: 30px;
     height: 30px;
-    cursor: pointer;
   }
 
   .prev-button {
@@ -262,10 +268,53 @@
     position: fixed;
     bottom: 0;
     left: 0;
+
     background: #ffffff;
-    height: 60px;
+    height: 70px;
     width: 100%;
     cursor: pointer;
+    z-index: 2000;
+  }
+
+  .mini-player-content {
+    position: absolute;
+    display: flex;
+    left: 0;
+    width: calc(100% - 60px);
+    justify-content: start;
+    margin-right: 60px;
+  }
+
+  .album-art-mini {
+    object-fit: contain;
+    height: 50px;
+    width: 50px;
+    max-height: 100%;
+    max-width: 100%;
+    margin: 10px 10px 20px 10px;
+  }
+
+  .name-mini-wrapper {
+    height: 20px;
+    margin: 20px 20px 0 20px;
+  }
+
+  .name-mini {
+    width: 100%;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .play-button-mini {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    right: 30px;
+    top: 20px;
+    cursor: pointer;
+    z-index: 2050;
   }
 
   .seek-bar-mini {
