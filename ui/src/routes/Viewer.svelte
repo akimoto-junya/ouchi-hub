@@ -1,6 +1,6 @@
 <script>
   import {onDestroy} from 'svelte';
-  import {source, isViewer} from '~/stores.js';
+  import {isPaused, sources, isViewer} from '~/stores.js';
   import Header from '~/components/Header.svelte';
   export let params = {};
   const fileType = {
@@ -8,17 +8,17 @@
   };
   const needsVideoPlayer = fileType[params.source.split('.').pop()] == "video";
   const sourceURL = `http://${MEDIA_ADDRESS}/` + params.source;
-  $source = "";
   $isViewer = true;
-
   onDestroy(() => $isViewer = false);
-
 </script>
 
 <Header />
 <div class="container">
 {#if needsVideoPlayer}
-  <video class="player" height="100%" width="100%" src={sourceURL} controls autoplay />
+  <video class="player" height="100%" width="100%"
+        src={sourceURL} controls autoplay
+        bind:paused={$isPaused}
+  />
 {:else}
   <img class="image" src={sourceURL} />
 {/if}

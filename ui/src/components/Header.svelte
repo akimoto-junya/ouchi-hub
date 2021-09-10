@@ -1,32 +1,57 @@
 <script>
   import {onMount, onDestroy} from 'svelte';
+  import {slide} from 'svelte/transition';
   import Drawer from './Drawer.svelte';
-  import {showDrawer, isViewer, disabledHeader} from '~/stores.js';
+  import {isPaused, showDrawer, isViewer} from '~/stores.js';
 
   let displayName = "";
 
-  $: if ($isViewer) {
-    setTimeout(() => $disabledHeader = true, 2000);
+  let onHeader = false;
+  let disabledHeader = false;
+
+  let timer = [];
+  $: if ($isViewer && !disabledHeader && !onHeader && !$isPaused && !$showDrawer) {
+    timer.push(setTimeout(() => {
+      if ($isViewer && !disabledHeader) {
+        disabledHeader = true;
+      }
+    }, 2000));
   }
-  onDestroy(() => $disabledHeader = false);
+  $: if (!$isViewer || $isPaused || $showDrawer || onHeader) {
+    timer.forEach(t => clearTimeout(t));
+    timer = [];
+    disabledHeader = false;
+  }
 
 </script>
 
-<div class="container {$disabledHeader? 'hidden': ''}">
-  <div class="menu" on:click={() => {$showDrawer = true;}} ></div>
+<svelte:body
+  on:mousemove={(e) => {
+    if ($isViewer && e.pageY < 40) {
+      onHeader = true;
+    } else {
+      onHeader = false;
+    }
+  }}
+/>
+
+{#if !disabledHeader}
+<div class="container" out:slide="{{y:-40, duration: $isViewer && disabledHeader? 500 : 0}}">
+  <div class="menu" on:click={() => {$showDrawer = true}} ></div>
   <div class="display-name">{displayName}</div>
   <div class="layout"></div>
 </div>
+{/if}
 <Drawer/>
 
 <style>
   .container {
+    position: fixed;
+    z-index: 500;
+    width: 100%;
     flex-shrink: 0;
     height: 40px;
     background: rgb(255, 0, 0);
-  }
-  .hidden {
-    display: none;
   }
 
   .menu {

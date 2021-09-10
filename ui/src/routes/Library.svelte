@@ -1,6 +1,6 @@
 <script>
   import {onMount} from 'svelte'
-  import {isMobile, isListView} from '~/stores';
+  import {isMobile, isListView, needsMiniPlayer} from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
@@ -36,7 +36,7 @@
 </script>
 
 <Header />
-<div>
+<div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
   <ol class="{$isMobile? 'group-mobile' : 'group'}">
   {#each works as work}
     <Work {...work} />
@@ -45,6 +45,17 @@
 </div>
 
 <style>
+  .container {
+    position: absolute;
+    width: 100%;
+    top: 40px;
+  }
+
+  .with-mini-player {
+    overflow-y: scroll;
+    bottom: 60px;
+  }
+
   .group {
     width: 850px;
     margin: 10px auto;
@@ -52,6 +63,7 @@
     list-style-type: none;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
   }
+
   .group-mobile {
     width: auto;
     margin: 10px 10px;

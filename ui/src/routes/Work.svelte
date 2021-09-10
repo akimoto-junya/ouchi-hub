@@ -1,7 +1,7 @@
 <script>
   import {onMount} from 'svelte';
   import {pop, push, location} from "svelte-spa-router";
-  import {isMobile, source} from '~/stores';
+  import {needsMiniPlayer, isMobile, sources} from '~/stores';
   import Item from '~/components/Item.svelte';
   import Header from '~/components/Header.svelte';
   export let params = {};
@@ -17,9 +17,18 @@
   const getSourceURL = (name) => {
     return [`http://${MEDIA_ADDRESS}`, media, group, $location.replace('/works/', ''), name].join('/');
   };
-  const setSource = (sourceName) => {
+  const setSources = (file) => {
     return () => {
-      $source = getSourceURL(sourceName);
+      let res = files.filter(f => f["fileType"] === file["fileType"]);
+      res.forEach(r => r["end"] = false);
+      res[res.length - 1]["end"] = true;
+      let i = 0;
+      while (i < res.length && res[0] !== file) {
+        const first = res.shift();
+        res = [...res, first];
+      }
+      res.map(r => r["source"] = getSourceURL(r["name"]));
+      $sources = res;
     };
   };
 
@@ -40,6 +49,7 @@
     media = res["media"];
     group = res["group"];
     res = res["tree"];
+
 
     const patterns = {
       "&amp;":"&", "&gt;": ">", "&lt;": "<", "&quot;": '"',
@@ -78,7 +88,7 @@
 
 <Header />
 {#if isLoaded}
-<div>
+<div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
   <h1>{name}</h1>
   <p>{params.tree}</p>
   <button on:click={pop}>prev</button>
@@ -90,7 +100,7 @@
     {#if needsViewer(file["fileType"])}
       <Item {...file} on:click={push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
     {:else}
-      <Item {...file} on:click={setSource(file["name"])} />
+      <Item {...file} on:click={setSources(file)} />
     {/if}
   {/each}
   </ol>
@@ -98,6 +108,17 @@
 {/if}
 
 <style>
+  .container {
+    position: absolute;
+    width: 100%;
+    top: 40px;
+  }
+
+  .with-mini-player {
+    overflow-y: scroll;
+    bottom: 60px;
+  }
+
   .group {
     width: 850px;
     margin: 10px auto;
