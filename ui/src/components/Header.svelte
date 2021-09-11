@@ -37,7 +37,7 @@
 
 {#if !disabledHeader}
 <div class="container" out:slide="{{y:-40, duration: $isViewer && disabledHeader? 500 : 0}}">
-  <img src="images/menu.png" class="menu" on:click={() => {$showDrawer = true}} />
+  <img src="images/menu.png" alt="" class="menu" on:click={() => {$showDrawer = true}} />
   <slot></slot>
 </div>
 {/if}

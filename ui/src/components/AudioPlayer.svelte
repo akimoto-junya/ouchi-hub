@@ -87,7 +87,7 @@
   {#if !$needsMiniPlayer}
     <div class="{$isMobile? 'player-mobile' : 'player'}"
          transition:slide={{y:-452, duration:200}} >
-      <img src="images/down-arrow.png" class="hidden-button" on:click={() => $needsMiniPlayer = true} />
+      <img src="images/down-arrow.png" alt="" class="hidden-button" on:click={() => $needsMiniPlayer = true} />
       <img class="album-art" src={$albumArt} alt=""/>
       <div class="controls-wrapper">
         <div class="seek-bar-wrapper">
@@ -102,10 +102,10 @@
         <div class="name-wrapper"><div class="name">{name}</div></div>
         <div class="controls">
           <div class="empty"></div>
-          <img src="images/prev.png" class="prev-button" on:click={prev} />
-          <img src={playState} class="play-button" on:click={play} />
-          <img src="images/next.png" class="next-button" on:click={next} />
-          <img src={repeatState} class="repeat-button" on:click={()=>i++} />
+          <img src="images/prev.png" alt="" class="prev-button" on:click={prev} />
+          <img src={playState} alt="" class="play-button" on:click={play} />
+          <img src="images/next.png" alt="" class="next-button" on:click={next} />
+          <img src={repeatState} alt="" class="repeat-button" on:click={()=>i++} />
         </div>
       </div>
     </div>
@@ -115,7 +115,7 @@
         <img class="album-art-mini" src={$albumArt} alt=""/>
         <div class="name-mini-wrapper"><div class="name-mini">{name}</div></div>
       </div>
-      <img src={playState} class="play-button-mini" on:click={play} />
+      <img src={playState} alt="" class="play-button-mini" on:click={play} />
       <progress class="seek-bar-mini" value={currentTime}></progress>
     </div>
   {/if}

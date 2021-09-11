@@ -23,12 +23,13 @@
 </Header>
 <div class="container">
 {#if needsVideoPlayer}
+  <!-- svelte-ignore a11y-media-has-caption -->
   <video class="player" height="100%" width="100%"
         src={sourceURL} controls autoplay
         bind:paused={$isPaused}
   />
 {:else}
-  <img  class="image" src={sourceURL} />
+  <img class="image" src={sourceURL} alt="" />
 {/if}
 </div>
 <style>
