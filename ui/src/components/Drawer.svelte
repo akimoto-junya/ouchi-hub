@@ -49,7 +49,6 @@
   }
 
   .display-name {
-    font-size: 20px;
     font-weight: bold;
     color: #ffffff;
     margin-left: 10px;
@@ -97,10 +96,9 @@
     flex-grow: 1;
     height: 40px;
     width: auto;
-    font-size: 20px;
     font-weight: bold;
-    margin-left: 10px;
-    margin-top: 5px;
+    margin-left: 30px;
+    margin-top: 13px;
     z-index: 1150;
   }
 
