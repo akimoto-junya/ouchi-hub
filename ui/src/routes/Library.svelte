@@ -1,7 +1,7 @@
 <script>
-  import {onMount} from 'svelte'
+  import {onMount, afterUpdate} from 'svelte'
   import {push} from 'svelte-spa-router';
-  import {isMobile, isListView, needsMiniPlayer, albumArt} from '~/stores';
+  import {isMobile, libraryScrollY, needsMiniPlayer, albumArt} from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
@@ -22,6 +22,8 @@
     return mediaTypeColor[t];
   };
 
+  let container;
+
   onMount(async () => {
     let res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
       mode: "cors",
@@ -40,13 +42,25 @@
     }, {});
   });
 
+  let needsScroll = true;
+  afterUpdate(() => {
+    if (needsScroll) {
+      container.scrollTo(0, Math.floor($libraryScrollY));
+      if (container.scrollTop === $libraryScrollY) {
+        needsScroll = false;
+      }
+    }
+  });
 </script>
 
 <div>
   <Header>
     <div class="display"><div>ライブラリ</div></div>
   </Header>
-  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
+  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}"
+       bind:this={container}
+       on:scroll={() => $libraryScrollY = container.scrollTop}
+       >
     {#each Object.entries(works) as group}
       <div class="group-name-wrapper">
         <div class="{$isMobile? 'group-name-mobile' : 'group-name'}">{group[0]}</div>

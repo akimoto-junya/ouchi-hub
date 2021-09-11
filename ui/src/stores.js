@@ -2,7 +2,7 @@ import { writable } from 'svelte/store'
 
 export const isMobile = writable(false);
 
-export const isListView = writable(true);
+export const libraryScrollY = writable(0);
 export const isViewer = writable(false);
 export const showDrawer = writable(false);
 
