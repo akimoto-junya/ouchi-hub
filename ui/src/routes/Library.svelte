@@ -23,16 +23,22 @@
   };
 
   onMount(async () => {
-    const res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
+    let res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
       mode: "cors",
     });
-    works = await res.json();
-    works = works["works"]
-    works.forEach(work => work["mediaTypeColor"] = getMediaTypeColor(work["media"]));
-    works.sort((a, b) => a["title"] < b["title"]? -1 : 1);
-    works.sort((a, b) => a["group"] < b["group"]? -1 : 1);
-    works.sort((a, b) => a["media"] < b["media"]? -1 : 1);
-  })
+    res = await res.json();
+    res = res["works"]
+    res.forEach(res => res["mediaTypeColor"] = getMediaTypeColor(res["media"]));
+    res.sort((a, b) => a["title"] < b["title"]? -1 : 1);
+    res.sort((a, b) => a["group"] < b["group"]? -1 : 1);
+    res.sort((a, b) => a["media"] < b["media"]? -1 : 1);
+
+    works = res.reduce((obj, current) => {
+      const key = current.group;
+      (obj[key] || (obj[key] = [])).push(current);
+      return obj;
+    }, {});
+  });
 
 </script>
 
@@ -41,15 +47,20 @@
     <div class="display"><div>ライブラリ</div></div>
   </Header>
   <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
-    <ol class="{$isMobile? 'group-mobile' : 'group'}">
-    {#each works as work}
-      <Work {...work}  on:click={() => {
-          $albumArt = work.imageURL;
-          push("/works/" + work.title);
-        }}
-      />
+    {#each Object.entries(works) as group}
+      <div class="group-name-wrapper">
+        <div class="{$isMobile? 'group-name-mobile' : 'group-name'}">{group[0]}</div>
+      </div>
+      <ol class="{$isMobile? 'group-mobile' : 'group'}">
+        {#each group[1] as work}
+          <Work {...work}  on:click={() => {
+              $albumArt = work.imageURL;
+              push("/works/" + work.title);
+            }}
+          />
+        {/each}
+      </ol>
     {/each}
-    <ol>
   </div>
 </div>
 
@@ -74,6 +85,21 @@
 
   .with-mini-player {
     bottom: 60px;
+  }
+
+  .group-name-wrapper {
+    margin: 0 10px;
+  }
+
+  .group-name {
+    font-size: 14px;
+    width: 850px;
+    margin: 30px auto 5px auto;
+  }
+  .group-name-mobile {
+    font-size: 14px;
+    width: auto;
+    margin: 30px auto 5px auto;
   }
 
   .group {

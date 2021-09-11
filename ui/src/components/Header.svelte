@@ -37,9 +37,8 @@
 
 {#if !disabledHeader}
 <div class="container" out:slide="{{y:-40, duration: $isViewer && disabledHeader? 500 : 0}}">
-  <div class="menu" on:click={() => {$showDrawer = true}} ></div>
+  <img src="images/menu.png" class="menu" on:click={() => {$showDrawer = true}} />
   <slot></slot>
-  <div class="layout"></div>
 </div>
 {/if}
 <Drawer/>
@@ -58,15 +57,8 @@
   .menu {
     width: 40px;
     height: 40px;
-    background-image: url("https://iconbox.fun/wp/wp-content/uploads/bars_24.png");
     background-size: contain;
     cursor: pointer;
   }
 
-  .layout {
-    width: 40px;
-    margin-left: auto;
-    background-color: rgb(0, 0, 255);
-    cursor: pointer;
-  }
 </style>

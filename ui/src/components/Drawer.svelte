@@ -1,5 +1,6 @@
 <script>
   import {fade} from 'svelte/transition';
+  import {push} from 'svelte-spa-router';
   import {showDrawer} from '~/stores.js';
   let isDisabled;
 
@@ -14,19 +15,44 @@
 
 {#if $showDrawer}
 <div class="drawer {isDisabled? 'is-disabled' : showDrawer? 'is-opened' : 'is-closed'}">
-  <div class="close" on:click={closeDrawer}>x</div>
+  <div class="drawer-header">
+    <img src="images/close.png" alt="" class="icon" on:click={closeDrawer} />
+    <div class="display-name">Ouchi Hub</div>
+  </div>
+  <div class="nav-wrapper" on:click={() => {push("/library"); closeDrawer();}}>
+    <img src="images/book.png" alt="" class="icon" />
+    <div class="nav">ライブラリ</div>
+  </div>
 </div>
 <div class="overlay" on:click={closeDrawer} transition:fade="{{duration:200}}"></div>
 {/if}
 
 <style>
   .drawer {
-    top: 0;
+    display: flex;
+    flex-direction: column;
     position: fixed;
+    top: 0;
     width: 250px;
     height: 100%;
-    background-color: rgb(255, 255, 0);
+    background-color: #ffffff;
     z-index: 1100;
+  }
+
+  .drawer-header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background: orange;
+    width: 250px;
+    height: 40px;
+  }
+
+  .display-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-left: 10px;
   }
 
   @keyframes close-drawer {
@@ -45,18 +71,37 @@
   .is-closed {
     display: flex;
     animation: 200ms linear close-drawer 1 forwards;
-    background-color: rgb(255, 0, 255);
   }
 
   .is-opened {
     display: flex;
   }
 
-  .close {
+  .icon {
     width: 40px;
     height: 40px;
-    background-color: rgb(255, 0, 255);
     cursor: pointer;
+  }
+
+  .nav-wrapper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin: 10px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+  }
+
+  .nav {
+    flex-grow: 1;
+    height: 40px;
+    width: auto;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 5px;
+    z-index: 1150;
   }
 
   .overlay {
