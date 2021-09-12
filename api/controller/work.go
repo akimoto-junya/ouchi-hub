@@ -120,13 +120,13 @@ func ReadWorkTree(c *gin.Context) {
 }
 
 func UpdateWorkImage(c *gin.Context) {
-    type Image {
+    type Image struct {
         URL string
     }
     var image Image
     title := c.Param("title")
     c.BindJSON(&image)
-    workService: = service.WorkService{}
+    workService := service.WorkService{}
     work := workService.ReadWork(title)
     if work == nil {
         c.JSON(http.StatusNotFound, gin.H{
@@ -139,8 +139,8 @@ func UpdateWorkImage(c *gin.Context) {
         })
         return
     }
-    work.ImageURL = Image.URL
-    err = workService.UpdateWorkImageURL(work)
+    work.ImageURL = image.URL
+    err := workService.UpdateWorkImageURL(work)
     if err != nil {
         c.JSON(http.StatusNotFound, gin.H{
             "message": "Specified path is not found",

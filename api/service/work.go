@@ -94,12 +94,12 @@ func (WorkService) ReadWork(title string) *model.Work {
     return &work
 }
 
-func (WorkService) UpdateWorkImageURL(work model.Work) err {
+func (WorkService) UpdateWorkImageURL(work *model.Work) error {
     workJson, err := json.Marshal(work)
     if err != nil {
         return err
     }
-    _, err = Client.HSet("works", work.Title, workJson)
+    _, err = Client.HSet("works", work.Title, workJson).Result()
     if err != nil {
         return err
     }
