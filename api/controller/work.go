@@ -118,3 +118,33 @@ func ReadWorkTree(c *gin.Context) {
         "tree": tree,
     })
 }
+
+func UpdateWorkImage(c *gin.Context) {
+    type Image {
+        URL string
+    }
+    var image Image
+    title := c.Param("title")
+    c.BindJSON(&image)
+    workService: = service.WorkService{}
+    work := workService.ReadWork(title)
+    if work == nil {
+        c.JSON(http.StatusNotFound, gin.H{
+            "message": "Specified path is not found",
+        })
+        return
+    } else if image.URL == "" {
+        c.JSON(http.StatusNotFound, gin.H{
+            "message": "Image url in request body is not found",
+        })
+        return
+    }
+    work.ImageURL = Image.URL
+    err = workService.UpdateWorkImageURL(work)
+    if err != nil {
+        c.JSON(http.StatusNotFound, gin.H{
+            "message": "Specified path is not found",
+        })
+        return
+    }
+}

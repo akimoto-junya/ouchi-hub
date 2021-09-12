@@ -20,6 +20,7 @@ func main() {
             work.PUT("", controller.UpdateWorks)
             work.GET("/:title", controller.ReadWork)
             work.GET("/:title/*tree", controller.ReadWorkTree)
+            work.PUT("/:title/image", controller.UpdateWorkImage)
         }
     }
 

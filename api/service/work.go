@@ -93,3 +93,15 @@ func (WorkService) ReadWork(title string) *model.Work {
     }
     return &work
 }
+
+func (WorkService) UpdateWorkImageURL(work model.Work) err {
+    workJson, err := json.Marshal(work)
+    if err != nil {
+        return err
+    }
+    _, err = Client.HSet("works", work.Title, workJson)
+    if err != nil {
+        return err
+    }
+    return nil
+}
