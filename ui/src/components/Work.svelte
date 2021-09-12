@@ -1,11 +1,9 @@
 <script>
-  import {push} from 'svelte-spa-router';
   export let title;
   export let group;
   export let media;
   export let mediaTypeColor;
   export let imageURL;
-
 
 </script>
 

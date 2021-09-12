@@ -1,6 +1,6 @@
 <script>
-  import {slide} from 'svelte/transition';
-  import {sources, isPaused, isViewer, isMobile, needsMiniPlayer, albumArt} from '~/stores.js';
+  import {slide} from "svelte/transition";
+  import {sources, isPaused, isViewer, isMobile, needsMiniPlayer, albumArt} from "~/stores.js";
 
   let audio;
 
@@ -14,13 +14,16 @@
 
   /* 再生する曲 */
   $: queue = $sources;
-  $: source = queue[0] !== undefined? queue[0]["source"]: "";
-  $: name = queue[0] !== undefined? queue[0]["name"] : "";
+  $: source = queue[0]? queue[0]["source"]: "";
+  $: name = queue[0]? queue[0]["name"] : "";
+  $: album = queue[0]? queue[0]["album"] : "";
+  $: group = queue[0]? queue[0]["group"] : "";
 
   /* 次の曲に行く動作 */
   let needsNext = false;
   $: if (needsNext) {
     if (state === 1) {
+      time = 0;
       audio.play();
     } else if (state == 2 || !queue[0]["end"]){
       const first = queue.shift();
@@ -69,10 +72,35 @@
   const play = () => {
     if (audio.paused) {
       audio.play();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "playing";
+      }
     } else {
       audio.pause();
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.playbackState = "paused";
+      }
     }
   };
+
+  /* Madia Session API */
+  if ("mediaSession" in navigator) {
+    navigator.mediaSession.setActionHandler("play", play);
+    navigator.mediaSession.setActionHandler("pause", play);
+    navigator.mediaSession.setActionHandler("previoustrack", prev);
+    navigator.mediaSession.setActionHandler("nexttrack", next);
+  }
+
+  $: if ("mediaSession" in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: name,
+      album: album,
+      artist: group,
+
+    });
+  }
+
+
 
 </script>
 

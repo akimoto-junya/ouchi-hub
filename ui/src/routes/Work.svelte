@@ -8,6 +8,7 @@
   let name = "";
   let media = "";
   let group = "";
+  let imageURL = "";
   let files = [];
   let dirs = [];
 
@@ -36,6 +37,8 @@
         res = [...res, first];
       }
       res.map(r => r["source"] = getSourceURL(r["name"]));
+      res.map(r => r["album"] = name);
+      res.map(r => r["group"] = group);
       $sources = res;
     };
   };
@@ -56,8 +59,8 @@
     name = res["title"];
     media = res["media"];
     group = res["group"];
+    imageURL = res["imageURL"];
     res = res["tree"];
-
 
     const patterns = {
       "&amp;":"&", "&gt;": ">", "&lt;": "<", "&quot;": '"',
@@ -79,7 +82,6 @@
 
     files = res.filter(r => r["type"] == "file");
     dirs = res.filter(r => r["type"] == "directory");
-
 
     const getFileImageURL = (name) => {
       return "images/" + getFileType(name) + ".png";
@@ -106,11 +108,11 @@
     <p>{params.tree}</p>
     <ol class="{$isMobile? 'group-mobile' : 'group'}">
     {#each dirs as directory}
-      <Item {...directory} on:click={push($location+"%2F"+directory["name"])}/>
+      <Item {...directory} on:click={() => push($location+"%2F"+directory["name"])}/>
     {/each}
     {#each files as file}
       {#if needsViewer(file["fileType"])}
-        <Item {...file} on:click={push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
+        <Item {...file} on:click={() => push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
       {:else}
         <Item {...file} on:click={setSources(file)} />
       {/if}

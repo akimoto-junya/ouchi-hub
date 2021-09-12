@@ -113,6 +113,7 @@ func ReadWorkTree(c *gin.Context) {
         "title": title,
         "media": work.Media,
         "group": work.Group,
+        "imageURL": work.ImageURL,
         "tree": tree,
     })
 }

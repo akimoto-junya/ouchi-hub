@@ -1,5 +1,4 @@
 <script>
-  import {push} from 'svelte-spa-router';
   export let name;
   export let type;
   export let fileType;
