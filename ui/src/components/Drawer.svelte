@@ -11,6 +11,13 @@
     isDisabled = false;
     $showDrawer = false;
   };
+
+  const updateWorks = () => {
+    fetch(`http://${API_ADDRESS}/api/v1/works` , {
+      method: "PUT",
+      mode: "cors",
+    });
+  };
 </script>
 
 {#if $showDrawer}
@@ -22,6 +29,14 @@
   <div class="nav-wrapper" on:click={() => {push("/library"); closeDrawer();}}>
     <img src="images/book.png" alt="" class="icon" />
     <div class="nav">ライブラリ</div>
+  </div>
+  <div class="nav-wrapper" on:click={() => {
+      updateWorks();
+      location.reload();
+      closeDrawer();
+    }}>
+    <img src="images/reload.png" alt="" class="icon" />
+    <div class="nav">作品の同期</div>
   </div>
 </div>
 <div class="overlay" on:click={closeDrawer} transition:fade="{{duration:200}}"></div>
