@@ -29,7 +29,7 @@
       mode: "cors",
     });
     res = await res.json();
-    res = res["works"]
+    res = res["works"];
     res.forEach(res => res["mediaTypeColor"] = getMediaTypeColor(res["media"]));
     res.sort((a, b) => a["title"] < b["title"]? -1 : 1);
     res.sort((a, b) => a["group"] < b["group"]? -1 : 1);
