@@ -38,6 +38,13 @@
     <img src="images/reload.png" alt="" class="icon" />
     <div class="nav">作品の同期</div>
   </div>
+  <div class="nav-wrapper" on:click={() => {
+      push("/setting/image");
+      closeDrawer();
+    }}>
+    <img src="images/image.png" alt="" class="icon" />
+    <div class="nav">作品画像の設定</div>
+  </div>
 </div>
 <div class="overlay" on:click={closeDrawer} transition:fade="{{duration:200}}"></div>
 {/if}

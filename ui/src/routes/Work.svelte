@@ -104,8 +104,13 @@
 </Header>
   {#if isLoaded}
   <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
-    <h1>{name}</h1>
-    <p>{params.tree}</p>
+    <div class="{$isMobile? 'group-mobile' : 'group'} work">
+      <img src={imageURL} alt="" class="work-thumbnail" />
+      <div class="work-detail">
+        <div class="work-name">{name}</div>
+        <div class="work-group">{group}</div>
+      </div>
+    </div>
     <ol class="{$isMobile? 'group-mobile' : 'group'}">
     {#each dirs as directory}
       <Item {...directory} on:click={() => push($location+"%2F"+directory["name"])}/>
@@ -149,18 +154,61 @@
     bottom: 60px;
   }
 
+  .work {
+    display: flex;
+
+  }
+
+  .work-thumbnail {
+    flex-shrink: 0;
+    height: 200px;
+    width: 200px;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 10px;
+  }
+
+  .work-detail {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+  }
+
+  .work-name {
+    display: -webkit-box;
+    font-size: 24px;
+    max-height: 50px;
+    line-height: 24px;
+    font-weight: bold;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .work-group {
+    font-size: 14px;
+    margin-top: 30px;
+  }
+
   .group {
     width: 850px;
     margin: 10px auto;
     padding-left: 0px;
     list-style-type: none;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
   }
+
   .group-mobile {
     width: auto;
     margin: 10px 10px;
     padding-left: 0px;
     list-style-type: none;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
   }
 </style>
