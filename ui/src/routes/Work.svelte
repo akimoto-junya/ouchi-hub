@@ -157,13 +157,13 @@
 
   .work {
     display: flex;
-
+    align-items: center;
   }
 
   .work-thumbnail {
     flex-shrink: 0;
-    height: 200px;
-    width: 200px;
+    height: 30%;
+    width: 30%;
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
@@ -173,17 +173,17 @@
   .work-detail {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    margin: 10px;
   }
 
   .work-name {
     display: -webkit-box;
-    font-size: 24px;
-    max-height: 50px;
-    line-height: 24px;
+    font-size: 14px;
+    max-height: 60px;
+    line-height: 20px;
     font-weight: bold;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     word-break: break-word;
     overflow-wrap: break-word;
     overflow: hidden;
