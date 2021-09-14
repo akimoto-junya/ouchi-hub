@@ -14,9 +14,10 @@
 
   /* 再生する曲 */
   $: source = $sources[0]? $sources[0]["source"]: "";
-  $: name = source? $sources[0]["name"] : "";
-  $: album = source? $sources[0]["album"] : "";
-  $: group = source? $sources[0]["group"] : "";
+  $: name = $sources[0]? $sources[0]["name"] : "";
+  $: album = $sources[0]? $sources[0]["album"] : "";
+  $: group = $sources[0]? $sources[0]["group"] : "";
+  $: $albumArt = $sources[0]? $sources[0]["imageURL"]: "";
 
   /* 次の曲に行く動作 */
   let needsNext = false;

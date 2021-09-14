@@ -36,9 +36,10 @@
         const first = res.shift();
         res = [...res, first];
       }
-      res.map(r => r["source"] = getSourceURL(r["name"]));
-      res.map(r => r["album"] = name);
-      res.map(r => r["group"] = group);
+      res.forEach(r => r["source"] = getSourceURL(r["name"]));
+      res.forEach(r => r["album"] = name);
+      res.forEach(r => r["group"] = group);
+      res.forEach(r => r["imageURL"] = imageURL);
       $sources = res;
     };
   };
