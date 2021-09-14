@@ -13,21 +13,20 @@
   $: playState = $isPaused? "images/play.png" : "images/stop.png";
 
   /* 再生する曲 */
-  $: queue = $sources;
-  $: source = queue[0]? queue[0]["source"]: "";
-  $: name = queue[0]? queue[0]["name"] : "";
-  $: album = queue[0]? queue[0]["album"] : "";
-  $: group = queue[0]? queue[0]["group"] : "";
+  $: source = $sources[0]? $sources[0]["source"]: "";
+  $: name = source? $sources[0]["name"] : "";
+  $: album = source? $sources[0]["album"] : "";
+  $: group = source? $sources[0]["group"] : "";
 
   /* 次の曲に行く動作 */
   let needsNext = false;
   $: if (needsNext) {
+    time = 0;
     if (state === 1) {
-      time = 0;
       audio.play();
-    } else if (state == 2 || !queue[0]["end"]){
-      const first = queue.shift();
-      queue = [...queue, first];
+    } else if (state == 2 || !$sources[0]["end"]){
+      const first = $sources.shift();
+      $sources = [...$sources, first];
     }
   }
 
@@ -52,20 +51,18 @@
 
   /* 操作 */
   const prev = () => {
-    if (state === 1) {
-      time = 0;
-    } else if (state == 2 || !queue[queue.length - 1]["end"]) {
-      const last = queue.pop();
-      queue = [last, ...queue];
+    time = 0;
+    if (state == 2 || !$sources[$sources.length - 1]["end"]) {
+      const last = $sources.pop();
+      $sources = [last, ...$sources];
     }
   };
 
   const next = () => {
-    if (state === 1) {
-      time = 0;
-    } else if (state === 2 || !queue[0]["end"]) {
-      const first = queue.shift();
-      queue = [...queue, first];
+    time = 0;
+    if (state === 2 || !$sources[0]["end"]) {
+      const first = $sources.shift();
+      $sources = [...$sources, first];
     }
   };
 
@@ -96,16 +93,13 @@
       title: name,
       album: album,
       artist: group,
-
     });
   }
-
-
 
 </script>
 
 <slot></slot>
-{#if !$isViewer && source !== ""}
+{#if !$isViewer && source}
   <audio style="display: none;" src={source} autoplay
          bind:currentTime={time}
          bind:duration={duration}
