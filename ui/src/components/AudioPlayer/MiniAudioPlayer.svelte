@@ -58,7 +58,6 @@
     background: #ffffff;
     height: 70px;
     width: 100%;
-    cursor: pointer;
     z-index: 2000;
   }
 
