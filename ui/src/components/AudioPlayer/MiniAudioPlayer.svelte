@@ -115,7 +115,7 @@
   .seek-bar-wrapper {
     display: flex;
     width: 100%;
-    margin: 10px 0;
+    margin: 5px 0;
   }
 
   .seek-bar {
@@ -153,7 +153,7 @@
   .controls {
     display: flex;
     justify-content: center;
-    margin: 10px;
+    margin: 15px 0 10px 0;
   }
 
   .empty {
