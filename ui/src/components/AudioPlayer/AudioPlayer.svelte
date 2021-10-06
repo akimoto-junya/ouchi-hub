@@ -99,7 +99,7 @@
         title: name,
         album: album,
         artist: group,
-        artwork: [{ src: artwork, type: "image/jpg", sizes: "256x256" }],
+        artwork: [{ src: artwork }],
       });
     }
   });
