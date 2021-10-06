@@ -1,7 +1,7 @@
 <script>
-  import {fade} from 'svelte/transition';
-  import {push} from 'svelte-spa-router';
-  import {showDrawer} from '~/stores.js';
+  import { fade } from 'svelte/transition';
+  import { push } from 'svelte-spa-router';
+  import { showDrawer } from '~/stores.js';
   let isDisabled;
 
   const openDrawer = () => {
@@ -13,40 +13,52 @@
   };
 
   const updateWorks = () => {
-    fetch(`http://${API_ADDRESS}/api/v1/works` , {
-      method: "PUT",
-      mode: "cors",
+    fetch(`http://${API_ADDRESS}/api/v1/works`, {
+      method: 'PUT',
+      mode: 'cors',
     });
   };
 </script>
 
 {#if $showDrawer}
-<div class="drawer {isDisabled? 'is-disabled' : showDrawer? 'is-opened' : 'is-closed'}">
-  <div class="drawer-header">
-    <img src="images/close.png" alt="" class="icon" on:click={closeDrawer} />
-    <div class="display-name">Ouchi Hub</div>
+  <div class="drawer {isDisabled ? 'is-disabled' : showDrawer ? 'is-opened' : 'is-closed'}">
+    <div class="drawer-header">
+      <img src="images/close.png" alt="" class="icon" on:click="{closeDrawer}" />
+      <div class="display-name">Ouchi Hub</div>
+    </div>
+    <div
+      class="nav-wrapper"
+      on:click="{() => {
+        push('/library');
+        closeDrawer();
+      }}"
+    >
+      <img src="images/book.png" alt="" class="icon" />
+      <div class="nav">ライブラリ</div>
+    </div>
+    <div
+      class="nav-wrapper"
+      on:click="{() => {
+        updateWorks();
+        location.reload();
+        closeDrawer();
+      }}"
+    >
+      <img src="images/reload.png" alt="" class="icon" />
+      <div class="nav">作品の同期</div>
+    </div>
+    <div
+      class="nav-wrapper"
+      on:click="{() => {
+        push('/setting/image');
+        closeDrawer();
+      }}"
+    >
+      <img src="images/image.png" alt="" class="icon" />
+      <div class="nav">作品画像の設定</div>
+    </div>
   </div>
-  <div class="nav-wrapper" on:click={() => {push("/library"); closeDrawer();}}>
-    <img src="images/book.png" alt="" class="icon" />
-    <div class="nav">ライブラリ</div>
-  </div>
-  <div class="nav-wrapper" on:click={() => {
-      updateWorks();
-      location.reload();
-      closeDrawer();
-    }}>
-    <img src="images/reload.png" alt="" class="icon" />
-    <div class="nav">作品の同期</div>
-  </div>
-  <div class="nav-wrapper" on:click={() => {
-      push("/setting/image");
-      closeDrawer();
-    }}>
-    <img src="images/image.png" alt="" class="icon" />
-    <div class="nav">作品画像の設定</div>
-  </div>
-</div>
-<div class="overlay" on:click={closeDrawer} transition:fade="{{duration:200}}"></div>
+  <div class="overlay" on:click="{closeDrawer}" transition:fade="{{ duration: 200 }}"></div>
 {/if}
 
 <style>

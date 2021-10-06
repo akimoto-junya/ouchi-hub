@@ -1,5 +1,5 @@
 <script>
-  import {sources, albumArt} from "~/stores.js";
+  import { sources, albumArt } from '~/stores.js';
 
   export let name;
   export let album;
@@ -15,21 +15,20 @@
 
   let progress;
   const seekTime = (e) => {
-    time = duration * e.offsetX / progress.clientWidth;
+    time = (duration * e.offsetX) / progress.clientWidth;
   };
 
   const format = (seconds) => {
-      if (isNaN(seconds)) return "";
-      const m = Math.floor(seconds / 60);
-      seconds = Math.floor(seconds % 60);
-      return `${m}:${seconds.toString().padStart(2, "0")}`;
+    if (isNaN(seconds)) return '';
+    const m = Math.floor(seconds / 60);
+    seconds = Math.floor(seconds % 60);
+    return `${m}:${seconds.toString().padStart(2, '0')}`;
   };
-
 </script>
 
 <div class="player">
   <div class="player-content">
-    <img class="album-art" src={$albumArt} alt=""/>
+    <img class="album-art" src="{$albumArt}" alt="" />
     <div class="info">
       <div class="info-wrapper"><div class="name">{name}</div></div>
       <div class="info-wrapper"><div class="album">{album}</div></div>
@@ -37,18 +36,14 @@
     <div class="controls-wrapper">
       <div class="controls">
         <div class="empty"></div>
-        <img src="images/prev.png" alt="" class="prev-button" on:click={prev} />
-        <img src={playState} alt="" class="play-button" on:click={play} />
-        <img src="images/next.png" alt="" class="next-button" on:click={next} />
-        <img src={repeatStateImg} alt="" class="repeat-button" on:click={nextRepeatState} />
+        <img src="images/prev.png" alt="" class="prev-button" on:click="{prev}" />
+        <img src="{playState}" alt="" class="play-button" on:click="{play}" />
+        <img src="images/next.png" alt="" class="next-button" on:click="{next}" />
+        <img src="{repeatStateImg}" alt="" class="repeat-button" on:click="{nextRepeatState}" />
       </div>
       <div class="seek-bar-wrapper">
         <div class="current-time">{format(time)}</div>
-        <progress class="seek-bar" value={currentTime}
-            on:click={seekTime}
-            bind:this={progress}
-        >
-        </progress>
+        <progress class="seek-bar" value="{currentTime}" on:click="{seekTime}" bind:this="{progress}"> </progress>
         <div class="duration">{format(duration)}</div>
       </div>
     </div>
@@ -194,6 +189,4 @@
     margin: 0 10px;
     cursor: pointer;
   }
-
 </style>
-

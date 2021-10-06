@@ -1,7 +1,7 @@
 <script>
-  import {onMount, afterUpdate} from 'svelte'
-  import {push} from 'svelte-spa-router';
-  import {isMobile, libraryScrollY, needsMiniPlayer, albumArt} from '~/stores';
+  import { onMount, afterUpdate } from 'svelte';
+  import { push } from 'svelte-spa-router';
+  import { isMobile, libraryScrollY, needsMiniPlayer, albumArt } from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
@@ -9,49 +9,54 @@
 
   onMount(async () => {
     let res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
-      mode: "cors",
+      mode: 'cors',
     });
     res = await res.json();
-    res = res["works"];
-    res.sort((a, b) => a["title"] < b["title"]? -1 : 1);
-    res.sort((a, b) => a["group"] < b["group"]? -1 : 1);
-    res.sort((a, b) => a["media"] < b["media"]? -1 : 1);
-    res.forEach(r => r["afterImageURL"] = r["imageURL"]);
+    res = res['works'];
+    res.sort((a, b) => (a['title'] < b['title'] ? -1 : 1));
+    res.sort((a, b) => (a['group'] < b['group'] ? -1 : 1));
+    res.sort((a, b) => (a['media'] < b['media'] ? -1 : 1));
+    res.forEach((r) => (r['afterImageURL'] = r['imageURL']));
     works = res;
   });
 
   const submit = (work) => {
     return () => {
-      fetch(`http://${API_ADDRESS}/api/v1/works/` + work.title + "/image", {
-        method: "PUT",
-        mode: "cors",
+      fetch(`http://${API_ADDRESS}/api/v1/works/` + work.title + '/image', {
+        method: 'PUT',
+        mode: 'cors',
         body: JSON.stringify({
-          "URL": work.afterImageURL,
+          URL: work.afterImageURL,
         }),
-      }).then(_ => {
+      }).then((_) => {
         location.reload();
-      })
+      });
     };
   };
-
 </script>
 
 <div>
   <Header>
     <div class="display"><div>作品画像の設定</div></div>
   </Header>
-  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
-    <ol class="{$isMobile? 'group-mobile' : 'group'}">
+  <div class="container {$needsMiniPlayer ? 'with-mini-player' : ''}">
+    <ol class="{$isMobile ? 'group-mobile' : 'group'}">
       {#each works as work}
         <div class="work-wrapper">
           <div class="work">
-            <img src={work.imageURL} alt="" class="thumbnail" />
+            <img src="{work.imageURL}" alt="" class="thumbnail" />
             <div>{work.title}</div>
           </div>
-          <form class="form-wrapper" on:submit|preventDefault={submit(work)}>
-            <label class="label" for={work.title}>URL :</label>
-            <input class="form" type="url" name={work.title} placeholder="画像のURLを入力(ex: http://example.com/image.png)" bind:value={work.afterImageURL} />
-            <button type="submit" class="submit-button" >変更</button>
+          <form class="form-wrapper" on:submit|preventDefault="{submit(work)}">
+            <label class="label" for="{work.title}">URL :</label>
+            <input
+              class="form"
+              type="url"
+              name="{work.title}"
+              placeholder="画像のURLを入力(ex: http://example.com/image.png)"
+              bind:value="{work.afterImageURL}"
+            />
+            <button type="submit" class="submit-button">変更</button>
           </form>
         </div>
       {/each}

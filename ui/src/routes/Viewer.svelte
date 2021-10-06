@@ -1,37 +1,39 @@
 <script>
-  import {onDestroy} from 'svelte';
-  import {pop} from 'svelte-spa-router';
-  import {isPaused, sources, isViewer} from '~/stores.js';
+  import { onDestroy } from 'svelte';
+  import { pop } from 'svelte-spa-router';
+  import { isPaused, sources, isViewer } from '~/stores.js';
   import Header from '~/components/Header.svelte';
   export let params = {};
   const fileType = {
-    "mp4": "video", "jpeg": "image", "jpg": "image", "png": "image",
+    mp4: 'video',
+    jpeg: 'image',
+    jpg: 'image',
+    png: 'image',
   };
-  const needsVideoPlayer = fileType[params.source.split('.').pop()] == "video";
+  const needsVideoPlayer = fileType[params.source.split('.').pop()] == 'video';
   const sourceURL = `http://${MEDIA_ADDRESS}/` + params.source;
   $isViewer = true;
   if (!needsVideoPlayer) {
     $isPaused = false;
   }
-  onDestroy(() => $isViewer = false);
+  onDestroy(() => ($isViewer = false));
 </script>
 
 <Header>
-  <div class="prev-wrapper" on:click={() => pop()}>
+  <div class="prev-wrapper" on:click="{() => pop()}">
     <div class="prev">＜&nbsp;&nbsp;戻る</div>
   </div>
 </Header>
 <div class="container">
-{#if needsVideoPlayer}
-  <!-- svelte-ignore a11y-media-has-caption -->
-  <video class="player" height="100%" width="100%"
-        src={sourceURL} controls autoplay
-        bind:paused={$isPaused}
-  />
-{:else}
-  <img class="image" src={sourceURL} alt="" />
-{/if}
+  {#if needsVideoPlayer}
+    <!-- svelte-ignore a11y-media-has-caption -->
+    <video class="player" height="100%" width="100%" src="{sourceURL}" controls autoplay bind:paused="{$isPaused}"
+    ></video>
+  {:else}
+    <img class="image" src="{sourceURL}" alt="" />
+  {/if}
 </div>
+
 <style>
   .container {
     position: absolute;
