@@ -1,7 +1,7 @@
 <script>
   import { onMount, afterUpdate } from 'svelte';
   import { push } from 'svelte-spa-router';
-  import { isMobile, libraryScrollY, needsMiniPlayer, albumArt } from '~/stores';
+  import { isMobile, libraryScrollY, needsMiniPlayer } from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 

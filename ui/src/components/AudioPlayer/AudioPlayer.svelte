@@ -7,11 +7,20 @@
   let audio;
 
   /* 再生する曲 */
-  $: source = $sources[0] ? $sources[0]['source'] : '';
-  $: name = $sources[0] ? $sources[0]['name'] : '';
-  $: album = $sources[0] ? $sources[0]['album'] : '';
-  $: group = $sources[0] ? $sources[0]['group'] : '';
-  $: $albumArt = $sources[0] ? $sources[0]['imageURL'] : '';
+  let source;
+  let name;
+  let album
+  let group;
+  sources.subscribe(s => {
+    if (s.length === 0) {
+      return;
+    }
+    source = s[0]['source'];
+    name = s[0]['name'];
+    album = s[0]['album'];
+    group = s[0]['group'];
+    $albumArt = s[0]['imageURL'];
+  });
 
   /* 再生時間 */
   let time = 0;
@@ -84,14 +93,16 @@
     navigator.mediaSession.setActionHandler('nexttrack', next);
   }
 
-  $: if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: name,
-      album: album,
-      artist: group,
-      artwork: [{ src: $albumArt }],
-    });
-  }
+  albumArt.subscribe(artwork => {
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: name,
+        album: album,
+        artist: group,
+        artwork: [{ src: artwork, type: "image/jpg", sizes: "256x256" }],
+      });
+    }
+  });
 </script>
 
 <slot />
