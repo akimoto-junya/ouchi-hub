@@ -2,7 +2,7 @@
   import Router from 'svelte-spa-router';
   import {routes} from '~/routes';
   import {isMobile} from '~/stores';
-  import AudioPlayer from '~/components/AudioPlayer.svelte';
+  import AudioPlayer from '~/components/AudioPlayer/AudioPlayer.svelte';
 
   let screenWidth;
 
