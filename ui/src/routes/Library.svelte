@@ -1,16 +1,13 @@
 <script>
-  import {onMount, afterUpdate} from 'svelte'
-  import {push} from 'svelte-spa-router';
-  import {isMobile, libraryScrollY, needsMiniPlayer} from '~/stores';
+  import { onMount, afterUpdate } from 'svelte';
+  import { push } from 'svelte-spa-router';
+  import { isMobile, libraryScrollY, needsMiniPlayer } from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
   let works = [];
 
-  const color = [
-    "#14c369", "#ff9c1e", "#1c75bc", "#ef489b",
-    "#665990", "#9e9e9e"
-  ];
+  const color = ['#14c369', '#ff9c1e', '#1c75bc', '#ef489b', '#665990', '#9e9e9e'];
 
   const mediaTypeColor = {};
   let i = 0;
@@ -26,14 +23,14 @@
 
   onMount(async () => {
     let res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
-      mode: "cors",
+      mode: 'cors',
     });
     res = await res.json();
-    res = res["works"];
-    res.forEach(res => res["mediaTypeColor"] = getMediaTypeColor(res["media"]));
-    res.sort((a, b) => a["title"] < b["title"]? -1 : 1);
-    res.sort((a, b) => a["group"] < b["group"]? -1 : 1);
-    res.sort((a, b) => a["media"] < b["media"]? -1 : 1);
+    res = res['works'];
+    res.forEach((res) => (res['mediaTypeColor'] = getMediaTypeColor(res['media'])));
+    res.sort((a, b) => (a['title'] < b['title'] ? -1 : 1));
+    res.sort((a, b) => (a['group'] < b['group'] ? -1 : 1));
+    res.sort((a, b) => (a['media'] < b['media'] ? -1 : 1));
 
     works = res.reduce((obj, current) => {
       const key = current.group;
@@ -57,19 +54,22 @@
   <Header>
     <div class="display"><div>ライブラリ</div></div>
   </Header>
-  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}"
-       bind:this={container}
-       on:scroll={() => $libraryScrollY = container.scrollTop}
-       >
+  <div
+    class="container {$needsMiniPlayer ? 'with-mini-player' : ''}"
+    bind:this="{container}"
+    on:scroll="{() => ($libraryScrollY = container.scrollTop)}"
+  >
     {#each Object.entries(works) as group}
       <div class="group-name-wrapper">
-        <div class="{$isMobile? 'group-name-mobile' : 'group-name'}">{group[0]}</div>
+        <div class="{$isMobile ? 'group-name-mobile' : 'group-name'}">{group[0]}</div>
       </div>
-      <ol class="{$isMobile? 'group-mobile' : 'group'}">
+      <ol class="{$isMobile ? 'group-mobile' : 'group'}">
         {#each group[1] as work}
-          <Work {...work}  on:click={() => {
-              push("/works/" + work.title);
-            }}
+          <Work
+            {...work}
+            on:click="{() => {
+              push('/works/' + work.title);
+            }}"
           />
         {/each}
       </ol>

@@ -1,14 +1,14 @@
 <script>
-  import {onMount} from 'svelte';
-  import {pop, push, location} from "svelte-spa-router";
-  import {needsMiniPlayer, isMobile, sources} from '~/stores';
+  import { onMount } from 'svelte';
+  import { pop, push, location } from 'svelte-spa-router';
+  import { needsMiniPlayer, isMobile, sources } from '~/stores';
   import Item from '~/components/Item.svelte';
   import Header from '~/components/Header.svelte';
   export let params = {};
-  let name = "";
-  let media = "";
-  let group = "";
-  let imageURL = "";
+  let name = '';
+  let media = '';
+  let group = '';
+  let imageURL = '';
   let files = [];
   let dirs = [];
 
@@ -17,9 +17,9 @@
 
   const getSourceURL = (name) => {
     const patterns = {
-      "#": "%23",
+      '#': '%23',
     };
-    name = name.replace(/#/g, m => {
+    name = name.replace(/#/g, (m) => {
       return patterns[m];
     });
 
@@ -28,25 +28,26 @@
 
   const setSources = (file) => {
     return () => {
-      let res = files.filter(f => f["fileType"] === file["fileType"]);
-      res.forEach(r => r["end"] = false);
-      res[res.length - 1]["end"] = true;
+      let res = files.filter((f) => f['fileType'] === file['fileType']);
+      res.forEach((r) => (r['end'] = false));
+      res[res.length - 1]['end'] = true;
       let i = 0;
       while (i < res.length && res[0] !== file) {
         const first = res.shift();
         res = [...res, first];
       }
-      res.forEach(r => r["source"] = getSourceURL(r["name"]));
-      res.forEach(r => r["album"] = name);
-      res.forEach(r => r["group"] = group);
-      res.forEach(r => r["imageURL"] = imageURL);
+      res.forEach((r) => (r['source'] = getSourceURL(r['name'])));
+      res.forEach((r) => (r['album'] = name));
+      res.forEach((r) => (r['group'] = group));
+      res.forEach((r) => (r['imageURL'] = imageURL));
       $sources = res;
     };
   };
 
   const needsViewer = (fileType) => {
     const needsViewerType = {
-      "image": true, "video": true,
+      image: true,
+      video: true,
     };
     return needsViewerType[fileType] || false;
   };
@@ -54,77 +55,89 @@
   async function loadComponent() {
     isLoaded = false;
     let res = await fetch(`http://${API_ADDRESS}/api/v1/works/` + params.tree, {
-        mode: "cors",
+      mode: 'cors',
     });
     res = await res.json();
-    name = res["title"];
-    media = res["media"];
-    group = res["group"];
-    imageURL = res["imageURL"];
-    res = res["tree"];
+    name = res['title'];
+    media = res['media'];
+    group = res['group'];
+    imageURL = res['imageURL'];
+    res = res['tree'];
 
     const patterns = {
-      "&amp;":"&", "&gt;": ">", "&lt;": "<", "&quot;": '"',
+      '&amp;': '&',
+      '&gt;': '>',
+      '&lt;': '<',
+      '&quot;': '"',
     };
     const getFileType = (name) => {
       const fileType = {
-        "txt": "text", "mp3": "audio", "m4a": "audio", "wav": "audio",
-        "mp4": "video", "jpeg": "image", "jpg": "image", "png": "image",
+        txt: 'text',
+        mp3: 'audio',
+        m4a: 'audio',
+        wav: 'audio',
+        mp4: 'video',
+        jpeg: 'image',
+        jpg: 'image',
+        png: 'image',
       };
-      return fileType[name.split('.').pop()] || "directory";
+      return fileType[name.split('.').pop()] || 'directory';
     };
 
-    res.forEach(r => {
-      r["fileType"] = getFileType(r["name"]);
-      r["name"] = r["name"].replace(/&(lt|gt|amp|quot);/g, m => {
-            return patterns[m];
+    res.forEach((r) => {
+      r['fileType'] = getFileType(r['name']);
+      r['name'] = r['name'].replace(/&(lt|gt|amp|quot);/g, (m) => {
+        return patterns[m];
       });
     });
 
-    files = res.filter(r => r["type"] == "file");
-    dirs = res.filter(r => r["type"] == "directory");
+    files = res.filter((r) => r['type'] == 'file');
+    dirs = res.filter((r) => r['type'] == 'directory');
 
     const getFileImageURL = (name) => {
-      return "images/" + getFileType(name) + ".png";
+      return 'images/' + getFileType(name) + '.png';
     };
 
-    files.forEach(file => {
-      file["imageURL"] = (file["fileType"] === "image")? getSourceURL(file["name"]) : getFileImageURL(file["name"]);
+    files.forEach((file) => {
+      file['imageURL'] = file['fileType'] === 'image' ? getSourceURL(file['name']) : getFileImageURL(file['name']);
     });
-    dirs.forEach(dir => dir["imageURL"] = "images/directory.png");
+    dirs.forEach((dir) => (dir['imageURL'] = 'images/directory.png'));
     isLoaded = true;
   }
-
 </script>
 
 <div>
-<Header>
-  <div class="prev-wrapper" on:click={pop}>
-    <div class="prev">＜&nbsp;&nbsp;戻る</div>
-  </div>
-</Header>
-  {#if isLoaded}
-  <div class="container {$needsMiniPlayer? 'with-mini-player' : ''}">
-    <div class="{$isMobile? 'group-mobile' : 'group'} work">
-      <img src={imageURL} alt="" class="work-thumbnail" />
-      <div class="work-detail">
-        <div class="work-name">{name}</div>
-        <div class="work-group">{group}</div>
-      </div>
+  <Header>
+    <div class="prev-wrapper" on:click="{pop}">
+      <div class="prev">＜&nbsp;&nbsp;戻る</div>
     </div>
-    <ol class="{$isMobile? 'group-mobile' : 'group'}">
-    {#each dirs as directory}
-      <Item {...directory} on:click={() => push($location+"%2F"+directory["name"])}/>
-    {/each}
-    {#each files as file}
-      {#if needsViewer(file["fileType"])}
-        <Item {...file} on:click={() => push("/view/" + [media, group, $location.replace('/works/', ''), file["name"]].join('%2F'))} />
-      {:else}
-        <Item {...file} on:click={setSources(file)} />
-      {/if}
-    {/each}
-    </ol>
-  </div>
+  </Header>
+  {#if isLoaded}
+    <div class="container {$needsMiniPlayer ? 'with-mini-player' : ''}">
+      <div class="{$isMobile ? 'group-mobile' : 'group'} work">
+        <img src="{imageURL}" alt="" class="work-thumbnail" />
+        <div class="work-detail">
+          <div class="work-name">{name}</div>
+          <div class="work-group">{group}</div>
+        </div>
+      </div>
+      <ol class="{$isMobile ? 'group-mobile' : 'group'}">
+        {#each dirs as directory}
+          <Item {...directory} on:click="{() => push($location + '%2F' + directory['name'])}" />
+        {/each}
+        {#each files as file}
+          {#if needsViewer(file['fileType'])}
+            <Item
+              {...file}
+              on:click="{() =>
+                push('/view/' + [media, group, $location.replace('/works/', ''), file['name']].join('%2F'))}"
+            />
+          {:else}
+            <Item {...file} on:click="{setSources(file)}" />
+          {/if}
+        {/each}
+      </ol>
+    </div>
   {/if}
 </div>
 

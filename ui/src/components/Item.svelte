@@ -6,11 +6,10 @@
 </script>
 
 <li on:click class="item">
-  <img src={imageURL} alt="{type}" loading="lazy" class="item-type" />
+  <img src="{imageURL}" alt="{type}" loading="lazy" class="item-type" />
   <div class="item-detail">
     <div class="name">{name}</div>
-    <div class="supplement">
-    </div>
+    <div class="supplement"></div>
   </div>
 </li>
 
