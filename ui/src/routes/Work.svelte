@@ -101,6 +101,11 @@
     files.forEach((file) => {
       file['imageURL'] = file['fileType'] === 'image' ? getSourceURL(file['name']) : getFileImageURL(file['name']);
     });
+    files.sort((a, b) => {
+      const pa = String(a['name']).replace(/(\d+)/g, m => m.padStart(15, '0'));
+      const pb = String(b['name']).replace(/(\d+)/g, m => m.padStart(15, '0'));
+      return pa > pb;
+    });
     dirs.forEach((dir) => (dir['imageURL'] = 'images/directory.png'));
     isLoaded = true;
   }
