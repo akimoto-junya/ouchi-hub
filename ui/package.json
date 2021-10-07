@@ -24,6 +24,7 @@
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^3.0.0",
     "dotenv": "^10.0.0",
+    "husky": "^7.0.2",
     "lint-staged": "^11.2.0",
     "prettier": "^2.4.1",
     "prettier-plugin-svelte": "^2.4.0",
