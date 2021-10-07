@@ -20,6 +20,16 @@
     album = s[0]['album'];
     group = s[0]['group'];
     $albumArt = s[0]['imageURL'];
+
+    /* Madia Session API METADATA */
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: name,
+        album: album,
+        artist: group,
+        artwork: [{ src: $albumArt }],
+      });
+    }
   });
 
   /* 再生時間 */
@@ -92,17 +102,6 @@
     navigator.mediaSession.setActionHandler('previoustrack', prev);
     navigator.mediaSession.setActionHandler('nexttrack', next);
   }
-
-  albumArt.subscribe(artwork => {
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: name,
-        album: album,
-        artist: group,
-        artwork: [{ src: artwork }],
-      });
-    }
-  });
 </script>
 
 <slot />
