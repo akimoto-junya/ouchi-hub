@@ -9,9 +9,9 @@
   /* 再生する曲 */
   let source;
   let name;
-  let album
+  let album;
   let group;
-  sources.subscribe(s => {
+  sources.subscribe((s) => {
     if (s.length === 0) {
       return;
     }
