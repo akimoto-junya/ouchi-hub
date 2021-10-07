@@ -11,5 +11,5 @@ export const routes = {
   '/works/:tree': Work,
   '/view/:source': Viewer,
   '/setting/image': SettingImage,
-  '/*/': NotFound
+  '/*/': NotFound,
 };

@@ -22,7 +22,7 @@
     $albumArt = s[0]['imageURL'];
 
     /* Madia Session API METADATA */
-    if ("mediaSession" in navigator) {
+    if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: name,
         album: album,
