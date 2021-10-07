@@ -6,16 +6,12 @@
     "build": "rollup -c",
     "dev": "HOST=0.0.0.0 rollup -c -w",
     "start": "sirv public --no-clear",
-    "format": "prettier --write 'src/**/*.svelte'"
+    "format": "prettier --write 'src/**/*.svelte'",
+    "prepare": "cd ../ && husky install ui/.husky"
   },
   "lint-staged": {
-    "*.svelte": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.js": [
-      "prettier --write",
-      "git add"
+    "*.{svelte, js}": [
+      "prettier --write"
     ]
   },
   "devDependencies": {
@@ -24,7 +20,7 @@
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^3.0.0",
     "dotenv": "^10.0.0",
-    "husky": "^7.0.2",
+    "husky": "^7.0.0",
     "lint-staged": "^11.2.0",
     "prettier": "^2.4.1",
     "prettier-plugin-svelte": "^2.4.0",
