@@ -8,12 +8,23 @@
     "start": "sirv public --no-clear",
     "format": "prettier --write 'src/**/*.svelte'"
   },
+  "lint-staged": {
+    "*.svelte": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.5",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-replace": "^3.0.0",
     "dotenv": "^10.0.0",
+    "lint-staged": "^11.2.0",
     "prettier": "^2.4.1",
     "prettier-plugin-svelte": "^2.4.0",
     "rollup": "^2.3.4",
