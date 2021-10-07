@@ -104,8 +104,9 @@
     files.sort((a, b) => {
       const pa = String(a['name']).replace(/(\d+)/g, m => m.padStart(15, '0'));
       const pb = String(b['name']).replace(/(\d+)/g, m => m.padStart(15, '0'));
-      return pa > pb;
+      return pa > pb? 1 : pa < pb? -1 : 0;
     });
+
     dirs.forEach((dir) => (dir['imageURL'] = 'images/directory.png'));
     isLoaded = true;
   }
