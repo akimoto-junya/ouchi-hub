@@ -106,8 +106,9 @@
   .work-wrapper {
     display: flex;
     flex-direction: column;
-    background-color: #fff;
-    border-bottom: 1px solid #eeeeee;
+    background-color: #181818;
+    border-bottom: 1px solid #aaaaaa;
+    color: #ffffff;
     list-style-type: none;
     overflow: hidden;
   }

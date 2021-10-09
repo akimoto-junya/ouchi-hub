@@ -55,7 +55,8 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    background: #ffffff;
+    background: #252525;
+    color: #ffffff;
     height: 70px;
     width: 100%;
     z-index: 2000;
@@ -95,7 +96,7 @@
 
   .album {
     width: 200px;
-    color: #393939;
+    color: #aaaaaa;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -108,7 +109,6 @@
     height: 200px;
     width: 100%;
     bottom: 0;
-    background: white;
   }
 
   .seek-bar-wrapper {
