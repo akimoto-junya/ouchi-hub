@@ -24,14 +24,13 @@
     height: 100px;
     width: auto;
     cursor: pointer;
-    background-color: #fff;
-    border-bottom: 1px solid #eeeeee;
+    background-color: #181818;
     list-style-type: none;
     overflow: hidden;
   }
 
   .work:last-of-type {
-    border-bottom: none;
+    border-bottom: 1px solid #aaaaaa;
   }
 
   .thumbnail {
@@ -59,7 +58,7 @@
     line-height: 18px;
     font-weight: bold;
     font-size: 14px;
-    color: #000;
+    color: #ffffff;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     word-break: break-word;
@@ -84,7 +83,7 @@
 
   .media-type {
     flex-shrink: 0;
-    color: #fff;
+    color: #181818;
     background: var(--media-type-color);
     font-weight: bold;
     vertical-align: middle;

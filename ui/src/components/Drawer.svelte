@@ -69,7 +69,7 @@
     top: 0;
     width: 250px;
     height: 100%;
-    background-color: #ffffff;
+    background-color: #181818;
     z-index: 1100;
   }
 
@@ -123,7 +123,8 @@
     margin: 10px;
     padding-bottom: 5px;
     cursor: pointer;
-    border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+    color: #ffffff;
+    border-bottom: 1px solid #aaaaaa;
   }
 
   .nav {

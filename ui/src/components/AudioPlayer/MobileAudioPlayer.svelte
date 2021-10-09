@@ -65,7 +65,8 @@
     right: 0;
     height: 100%;
     width: 100%;
-    background: #393939;
+    background: #181818;
+    color: #ffffff;
     z-index: 2000;
   }
 
@@ -96,7 +97,7 @@
     height: 200px;
     width: 100%;
     bottom: 0;
-    background: white;
+    background: #252525;
   }
 
   .name-wrapper {
@@ -190,7 +191,8 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    background: #ffffff;
+    background: #252525;
+    color: #ffffff;
     height: 70px;
     width: 100%;
     cursor: pointer;
@@ -244,7 +246,7 @@
     bottom: 0;
     height: 3px;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #181818;
   }
 
   .seek-bar-mini::-webkit-progress-value {
@@ -252,7 +254,7 @@
   }
 
   .seek-bar-mini::-webkit-progress-bar {
-    background-color: #ffffff;
+    background-color: #181818;
   }
 
   .seek-bar-mini::-moz-progress-bar {

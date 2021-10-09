@@ -20,14 +20,9 @@
     height: 70px;
     width: auto;
     cursor: pointer;
-    background-color: #fff;
-    border-bottom: 1px solid #eeeeee;
+    background-color: #181818;
     list-style-type: none;
     overflow: hidden;
-  }
-
-  .item:last-of-type {
-    border-bottom: none;
   }
 
   .item-type {
@@ -55,7 +50,7 @@
     line-height: 18px;
     font-weight: bold;
     font-size: 14px;
-    color: #000;
+    color: #ffffff;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     word-break: break-word;

@@ -108,11 +108,14 @@
     font-size: 14px;
     width: 850px;
     margin: 30px auto 5px auto;
+    color: #ffffff;
   }
+
   .group-name-mobile {
     font-size: 14px;
     width: auto;
     margin: 30px auto 5px auto;
+    color: #ffffff;
   }
 
   .group {
@@ -120,7 +123,6 @@
     margin: 10px auto;
     padding-left: 0px;
     list-style-type: none;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
   }
 
   .group-mobile {
@@ -128,6 +130,5 @@
     margin: 10px 10px;
     padding-left: 0px;
     list-style-type: none;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
   }
 </style>

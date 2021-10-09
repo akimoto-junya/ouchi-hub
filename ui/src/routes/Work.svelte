@@ -177,6 +177,8 @@
   .work {
     display: flex;
     align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #aaaaaa;
   }
 
   .work-thumbnail {
@@ -197,6 +199,7 @@
 
   .work-name {
     display: -webkit-box;
+    color: #ffffff;
     font-size: 14px;
     max-height: 60px;
     line-height: 20px;
@@ -219,8 +222,7 @@
     margin: 10px auto;
     padding-left: 0px;
     list-style-type: none;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
-    background: #ffffff;
+    background: #181818;
   }
 
   .group-mobile {
@@ -228,7 +230,6 @@
     margin: 10px 10px;
     padding-left: 0px;
     list-style-type: none;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.15);
-    background: #ffffff;
+    background: #181818;
   }
 </style>
