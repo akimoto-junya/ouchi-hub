@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "os"
     "os/exec"
     "encoding/json"
     "net/http"
@@ -16,6 +17,9 @@ type Node struct {
 }
 
 func ReadTree(path string) ([]Node, error) {
+    if _, err := os.Stat(path); os.IsNotExist(err) {
+        return nil, err;
+    }
     out, err := exec.Command("tree", "-J", "-L", "1", path).Output()
     if err != nil {
         return nil, err
