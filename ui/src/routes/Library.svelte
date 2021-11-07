@@ -83,6 +83,7 @@
     width: 100%;
     top: 40px;
     bottom: 0;
+    padding-bottom: 100px;
     overflow-y: scroll;
   }
 

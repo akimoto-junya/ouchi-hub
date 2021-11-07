@@ -23,6 +23,7 @@
     position: relative;
     height: 100px;
     width: auto;
+    margin: 50px 0;
     cursor: pointer;
     background-color: #181818;
     list-style-type: none;
@@ -30,6 +31,7 @@
   }
 
   .work:last-of-type {
+    padding-bottom: 30px;
     border-bottom: 1px solid #aaaaaa;
   }
 
