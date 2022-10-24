@@ -6,12 +6,9 @@ import replace from '@rollup/plugin-replace';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
-import dotenv from 'dotenv';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
-const path = require('path');
-
-dotenv.config();
 
 function serve() {
   let server;
@@ -61,8 +58,8 @@ export default {
 
     replace({
       preventAssignment: true,
-      API_ADDRESS: JSON.stringify(process.env.API_ADDRESS),
-      MEDIA_ADDRESS: JSON.stringify(process.env.MEDIA_ADDRESS),
+      'process.env.API_ADDRESS': JSON.stringify(process.env.API_ADDRESS),
+      'process.env.MEDIA_ADDRESS': JSON.stringify(process.env.MEDIA_ADDRESS),
     }),
 
     // If you have external dependencies installed from
@@ -82,7 +79,7 @@ export default {
 
     // Watch the `public` directory and refresh the
     // browser on changes when not in production
-    !production && livereload('public'),
+    !production && livereload({watch: 'public', port: 35730}),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
