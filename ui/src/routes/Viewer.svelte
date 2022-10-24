@@ -1,7 +1,7 @@
 <script>
   import { onDestroy } from 'svelte';
   import { pop } from 'svelte-spa-router';
-  import { isPaused, sources, isViewer } from '~/stores.js';
+  import { isPaused, sources, isViewer, mediaAddress } from '~/stores.js';
   import Header from '~/components/Header.svelte';
   export let params = {};
   const fileType = {
@@ -11,7 +11,7 @@
     png: 'image',
   };
   const needsVideoPlayer = fileType[params.source.split('.').pop()] == 'video';
-  const sourceURL = `http://${MEDIA_ADDRESS}/` + params.source;
+  const sourceURL = $mediaAddress + "/" + params.source;
   $isViewer = true;
   if (!needsVideoPlayer) {
     $isPaused = false;

@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { pop, push, location } from 'svelte-spa-router';
-  import { needsMiniPlayer, isMobile, sources } from '~/stores';
+  import { needsMiniPlayer, isMobile, sources, apiAddress, mediaAddress } from '~/stores';
   import Item from '~/components/Item.svelte';
   import Header from '~/components/Header.svelte';
   export let params = {};
@@ -23,7 +23,7 @@
       return patterns[m];
     });
 
-    return [`http://${MEDIA_ADDRESS}`, media, group, $location.replace('/works/', ''), name].join('/');
+    return [$mediaAddress, media, group, $location.replace('/works/', ''), name].join('/');
   };
 
   const setSources = (file) => {
@@ -54,7 +54,7 @@
 
   async function loadComponent() {
     isLoaded = false;
-    let res = await fetch(`http://${API_ADDRESS}/api/v1/works/` + params.tree, {
+    let res = await fetch($apiAddress + "/works/" + params.tree, {
       mode: 'cors',
     });
     res = await res.json();

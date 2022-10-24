@@ -1,14 +1,14 @@
 <script>
   import { onMount, afterUpdate } from 'svelte';
   import { push } from 'svelte-spa-router';
-  import { isMobile, libraryScrollY, needsMiniPlayer } from '~/stores';
+  import { isMobile, libraryScrollY, needsMiniPlayer, apiAddress } from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
 
   let works = [];
 
   onMount(async () => {
-    let res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
+    let res = await fetch($apiAddress + "/works", {
       mode: 'cors',
     });
     res = await res.json();
@@ -22,7 +22,7 @@
 
   const submit = (work) => {
     return () => {
-      fetch(`http://${API_ADDRESS}/api/v1/works/` + work.title + '/image', {
+      fetch($apiAddress + "/works/" + work.title + '/image', {
         method: 'PUT',
         mode: 'cors',
         body: JSON.stringify({

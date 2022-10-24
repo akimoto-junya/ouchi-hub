@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, readable } from 'svelte/store';
 
 export const isMobile = writable(false);
 
@@ -11,3 +11,6 @@ export const albumArt = writable('');
 
 export const isPaused = writable(true);
 export const sources = writable([]);
+
+export const apiAddress = readable(process.env.API_ADDRESS)
+export const mediaAddress = readable(process.env.MEDIA_ADDRESS)

@@ -1,9 +1,10 @@
 <script>
   import { onMount, afterUpdate } from 'svelte';
   import { push } from 'svelte-spa-router';
-  import { isMobile, libraryScrollY, needsMiniPlayer } from '~/stores';
+  import { isMobile, libraryScrollY, needsMiniPlayer, apiAddress } from '~/stores';
   import Header from '~/components/Header.svelte';
   import Work from '~/components/Work.svelte';
+
 
   let works = [];
 
@@ -22,7 +23,7 @@
   let container;
 
   onMount(async () => {
-    let res = await fetch(`http://${API_ADDRESS}/api/v1/works`, {
+    let res = await fetch($apiAddress + "/works", {
       mode: 'cors',
     });
     res = await res.json();
