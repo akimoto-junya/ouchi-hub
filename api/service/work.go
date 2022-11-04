@@ -13,19 +13,27 @@ type WorkService struct {}
 func (WorkService) UpdateWorks() error {
     // 作品名をmedia内から取得しMap作成
     dirs, err := filepath.Glob(filepath.Join(MEDIA_URL, "/*/*/*"))
+
     if err != nil {
         return err
     }
-    basedirs := make(map[string][]string)
+
+    basedirs := [][]string{}
     for _, dir := range dirs {
         parts := strings.Split(dir, string(os.PathSeparator))
         l := len(parts)
-        basedirs[parts[l-1]] = []string{parts[l-3], parts[l-2]}
+        basedirs = append(basedirs, []string{parts[l-3], parts[l-2], parts[l-1]})
     }
 
+    containedkeys := make(map[string]struct{})
+
     // データベース内になくmedia内にあるなら作成
-    for dir, _ := range basedirs {
-        exists, err := Client.HExists("works", dir).Result()
+    for _, mediadir := range basedirs {
+        title, group, media := mediadir[2], mediadir[1], mediadir[0]
+        key := strings.Join(mediadir, "/")
+        containedkeys[key] = struct{}{}
+
+        exists, err := Client.HExists("works", key).Result()
         if err != nil {
             return err
         } else if exists {
@@ -33,33 +41,33 @@ func (WorkService) UpdateWorks() error {
         }
 
         work := model.Work{
-            Title: dir,
-            Group: basedirs[dir][1],
-            Media: basedirs[dir][0],
+            Title: title,
+            Group: group,
+            Media: media,
             ImageURL: "",
         }
         workJson, err := json.Marshal(work)
         if err != nil {
             return err
         }
-        _, err = Client.HSet("works", dir, workJson).Result()
+        _, err = Client.HSet("works", key, workJson).Result()
         if err != nil {
             return err
         }
     }
 
     // media内になくデータベース内にあるなら削除
-    titles, err := Client.HKeys("works").Result()
+    keys, err := Client.HKeys("works").Result()
     if err != nil {
         return err
     }
-    for _, title := range titles {
+    for _, key := range keys {
         if err != nil {
             return err
-        } else if _, ok := basedirs[title]; ok {
+        } else if _, ok := containedkeys[key]; ok {
             continue
         }
-        Client.HDel("works", title)
+        Client.HDel("works", key)
         if err != nil {
             return err
         }

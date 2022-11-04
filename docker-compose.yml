@@ -1,8 +1,16 @@
 version: '3'
 services:
+  server:
+    build: ./server
+    volumes:
+      - ./ui/build:/var/www
+      - ${HOST_MEDIA_PATH}:/${MEDIA_PATH}
+    ports:
+      - "8000:80"
+
   ui:
     image: node:18.9.0-alpine3.15
-    command: ash -c "npm install && npm run dev"
+    command: ash -c "npm install && npm start"
     volumes:
         - ./ui:/home/node
     working_dir: /home/node
@@ -10,7 +18,21 @@ services:
         - "5000:5000"
         - "35730:35730"
     environment:
-      - API_ADDRESS
-      - MEDIA_ADDRESS
+      - REACT_APP_API_ADDRESS=$API_ADDRESS
+      - REACT_APP_MEDIA_ADDRESS=$MEDIA_ADDRESS
 
+  api:
+    build: ./api
+    command: ash -c "go run main.go"
+    volumes:
+      - ./api:/home/api
+      - ${HOST_MEDIA_PATH}:/${MEDIA_PATH}
+    working_dir: /home/api
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_ADDRESS
+      - MEDIA_PATH
+  db:
+    image: redis:7.0.5-alpine
 

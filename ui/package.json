@@ -3,22 +3,56 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "PORT=5000 react-scripts start",
+    "build": "react-scripts build",
+    "prepare": "cd ../ && husky install ui/.husky",
+    "lint-staged": "lint-staged",
+    "format": "prettier --write src/",
+    "lint": "eslint --fix src/",
+    "fix": "npm run lint && npm run format"
+  },
+  "lint-staged": {
+    "*.{ts, tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "dependencies": {
-    "next": "12.3.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.12",
+    "@types/chroma-js": "^2.1.4",
+    "@types/node": "^16.18.0",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "chroma-js": "^2.4.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
-    "@types/node": "18.11.4",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "eslint": "8.26.0",
-    "eslint-config-next": "12.3.1",
-    "typescript": "4.8.4"
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
   }
 }
