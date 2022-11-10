@@ -17,3 +17,10 @@ export function* genUniqueColors(): Generator<Color, Color, Color> {
     yield chroma.hsl(360 * m, saturation, lightness);
   }
 }
+
+export const formatTime = (seconds: number) => {
+  if (isNaN(seconds)) return '';
+  const m = Math.floor(seconds / 60);
+  seconds = Math.floor(seconds % 60);
+  return `${m}:${seconds.toString().padStart(2, '0')}`;
+};

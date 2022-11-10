@@ -25,7 +25,7 @@ type Props = {
 
 type DrawerItem = {
   name: string;
-  onClick: (navigate: NavigateFunction) => (() => void);
+  onClick: (navigate: NavigateFunction) => () => void;
 };
 
 const drawerWidth = 240;

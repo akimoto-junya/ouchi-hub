@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { WorkList } from 'features/Library';
+import { AudioPlayer } from 'features/Player';
 import { useSetters } from 'components/layouts/PageWrapper';
 
 function Library() {
@@ -10,7 +11,12 @@ function Library() {
     setTitle('Library');
   }, [setVisibleHeader, setTitle]);
 
-  return <WorkList />;
+  return (
+    <>
+      <AudioPlayer />
+      <WorkList />
+    </>
+  );
 }
 
 export default Library;
