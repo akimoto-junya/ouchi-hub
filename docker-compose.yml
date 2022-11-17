@@ -23,7 +23,7 @@ services:
 
   api:
     build: ./api
-    command: ash -c "go run main.go"
+    command: ash -c "air -c ./air.toml"
     volumes:
       - ./api:/home/api
       - ${HOST_MEDIA_PATH}:/${MEDIA_PATH}

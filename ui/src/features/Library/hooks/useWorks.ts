@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { WorkList, Work } from '../types';
+import { WorkInfoList, WorkInfo } from '../types';
 import { getWorks, updateWorks } from '../api';
 
 const useWorks = () => {
-  const [works, setWorks] = useState<Work[]>([]);
+  const [works, setWorks] = useState<WorkInfo[]>([]);
 
   const get = () => {
-    getWorks().then((result) => setWorks((result as WorkList).works));
+    getWorks().then((result) => setWorks((result as WorkInfoList).works));
   };
 
   const update = () => {

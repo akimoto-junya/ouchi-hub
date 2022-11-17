@@ -20,6 +20,29 @@ export type AppliedMediaSessionMethod = {
   pause: () => void;
 };
 
+export type AudioQueue = {
+  audio: {
+    nowPlaying: Media;
+    currentTime: number;
+    duration: number;
+    paused: boolean;
+    ended: boolean;
+    loopState: LoopState;
+  };
+  control: {
+    setSources: (sources: Media[], onset?: number) => void;
+    play: () => void;
+    pause: () => void;
+    toggle: () => void;
+    jump: (time: number) => void;
+    next: () => void;
+    prev: () => void;
+    reset: () => void;
+    toggleLoopState: () => void;
+    needsVisualize: () => boolean;
+  };
+};
+
 export type AudioPlayerProps = {
   audio: {
     nowPlaying: Media;

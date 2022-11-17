@@ -1,10 +1,9 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PageWrapper from 'components/layouts/PageWrapper';
 import Home from 'pages/Home';
 import Library from 'pages/Library';
 import Work from 'pages/Work';
-import Test from 'pages/Test';
+import NotFound from 'pages/NotFound';
 
 function App() {
   return (
@@ -13,8 +12,9 @@ function App() {
         <Route path="/" element={<PageWrapper />}>
           <Route index element={<Home />} />
           <Route path="/library" element={<Library />} />
-          <Route path="/work" element={<Work />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/works/:group/:media/:tree/*" element={<Work />} />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/404" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

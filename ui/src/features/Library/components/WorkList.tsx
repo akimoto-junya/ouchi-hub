@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Color } from 'chroma-js';
 import { genUniqueColors, White } from 'utils/helper';
-import Work from './Work';
+import Work from './WorkItem';
 import styles from '../styles/WorkList.module.css';
 import { useWorks } from '../hooks';
 import { groupBy } from '../services';
-import { Work as WorkType } from '../types';
+import { WorkInfo } from '../types';
 
 function WorkList() {
   const [works, method] = useWorks();
-  const [groups, setGroups] = useState<Map<string, WorkType[]>>(new Map());
+  const [groups, setGroups] = useState<Map<string, WorkInfo[]>>(new Map());
   const [mediaColors, setMediaColors] = useState<Map<string, Color>>(new Map());
 
   useEffect(() => {
@@ -28,7 +28,6 @@ function WorkList() {
 
   return (
     <ul className={styles['container']}>
-      {' '}
       {Array.from(groups.entries()).map(([group, works]) => {
         return (
           <li key={group} className={styles['group']}>

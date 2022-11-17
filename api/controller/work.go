@@ -3,6 +3,7 @@ package controller
 import (
     "os"
     "os/exec"
+    "strings"
     "encoding/json"
     "net/http"
     "path/filepath"
@@ -67,9 +68,12 @@ func UpdateWorks(c *gin.Context) {
 }
 
 func ReadWork(c *gin.Context) {
+    media := c.Query("media")
+    group := c.Query("group")
     title := c.Param("title")
+    key := strings.Join([]string{media, group, title}, "-")
     workService := service.WorkService{}
-    work := workService.ReadWork(title)
+    work := workService.ReadWork(key)
     if work == nil {
         c.JSON(http.StatusNotFound, gin.H{
             "message": "Specified path is not found",
@@ -96,9 +100,12 @@ func ReadWork(c *gin.Context) {
 }
 
 func ReadWorkTree(c *gin.Context) {
+    media := c.Query("media")
+    group := c.Query("group")
     title := c.Param("title")
+    key := strings.Join([]string{media, group, title}, "-")
     workService := service.WorkService{}
-    work := workService.ReadWork(title)
+    work := workService.ReadWork(key)
     if work == nil {
         c.JSON(http.StatusNotFound, gin.H{
             "message": "Specified path is not found",

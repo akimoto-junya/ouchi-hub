@@ -1,19 +1,17 @@
 import { useEffect } from 'react';
 import { WorkList } from 'features/Library';
-import { AudioPlayer } from 'features/Player';
-import { useSetters } from 'components/layouts/PageWrapper';
+import { usePageWrapperSetters } from 'components/layouts/PageWrapper';
 
 function Library() {
-  const { setVisibleHeader, setTitle } = useSetters();
+  const { setVisibleHeader, setHeader } = usePageWrapperSetters();
 
   useEffect(() => {
     setVisibleHeader(true);
-    setTitle('Library');
-  }, [setVisibleHeader, setTitle]);
+    setHeader(<div>Library</div>);
+  }, [setVisibleHeader, setHeader]);
 
   return (
     <>
-      <AudioPlayer />
       <WorkList />
     </>
   );

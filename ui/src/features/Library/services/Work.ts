@@ -1,7 +1,7 @@
-import { Work } from '../types';
+import { WorkInfo } from '../types';
 
-export const groupBy = (works: Work[], key: (obj: Work) => string): Map<string, Work[]> => {
-  const result = new Map<string, Work[]>();
+export const groupBy = (works: WorkInfo[], key: (obj: WorkInfo) => string): Map<string, WorkInfo[]> => {
+  const result = new Map<string, WorkInfo[]>();
 
   works.forEach((work) => {
     const k = key(work);

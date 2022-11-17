@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, ReactNode } from 'react';
 import { useNavigate, NavigateFunction } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -13,14 +13,13 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Fade from '@mui/material/Fade';
 
 import { updateWorks } from 'features/Library/api';
 
 type Props = {
   visible: boolean;
-  title: string;
+  header: ReactNode;
 };
 
 type DrawerItem = {
@@ -54,7 +53,7 @@ const navItems: DrawerItem[] = [
   },
 ];
 
-const DrawerAppBar: FC<Props> = ({ visible, title }) => {
+const DrawerAppBar: FC<Props> = ({ visible, header }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const handleDrawerToggle = () => {
@@ -89,20 +88,13 @@ const DrawerAppBar: FC<Props> = ({ visible, title }) => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
+              sx={{ mr: 2  }}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {title}
+              {header}
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {navItems.map((item) => (
-                <Button key={item.name} onClick={item.onClick(navigate)} sx={{ color: '#fff' }}>
-                  {item.name}
-                </Button>
-              ))}
-            </Box>
           </Toolbar>
         </AppBar>
         <Box component="nav">
@@ -114,7 +106,6 @@ const DrawerAppBar: FC<Props> = ({ visible, title }) => {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: 'block', sm: 'none' },
               '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
             }}
           >

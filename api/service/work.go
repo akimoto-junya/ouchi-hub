@@ -30,7 +30,7 @@ func (WorkService) UpdateWorks() error {
     // データベース内になくmedia内にあるなら作成
     for _, mediadir := range basedirs {
         title, group, media := mediadir[2], mediadir[1], mediadir[0]
-        key := strings.Join(mediadir, "/")
+        key := strings.Join(mediadir, "-")
         containedkeys[key] = struct{}{}
 
         exists, err := Client.HExists("works", key).Result()
@@ -90,8 +90,8 @@ func (WorkService) ReadWorks() []model.Work {
     return works
 }
 
-func (WorkService) ReadWork(title string) *model.Work {
-    workJson, err := Client.HGet("works", title).Result()
+func (WorkService) ReadWork(key string) *model.Work {
+    workJson, err := Client.HGet("works", key).Result()
     if err != nil {
         return nil
     }
