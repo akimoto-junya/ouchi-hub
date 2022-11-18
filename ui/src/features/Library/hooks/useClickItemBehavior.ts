@@ -1,4 +1,4 @@
-import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getFileType, getSourceURL, isAudioType, isDirectoryType } from '../services';
 import { WorkInfo } from '../types';
 import { Media, AudioQueue } from 'features/Player/types';
@@ -36,7 +36,7 @@ const ClickAudioItem = (work: WorkInfo, filename: string, audioQueue: AudioQueue
   };
 };
 
-const useClickWorkBehavior = (work?: WorkInfo, audioQueue?: AudioQueue) => {
+const useClickItemBehavior = (work?: WorkInfo, audioQueue?: AudioQueue) => {
   const navigate = useNavigate();
   if (typeof work === 'undefined' || typeof navigate === 'undefined' || typeof audioQueue === 'undefined') {
     return ({}: ClickWorkProps) =>
@@ -55,4 +55,4 @@ const useClickWorkBehavior = (work?: WorkInfo, audioQueue?: AudioQueue) => {
   };
 };
 
-export default useClickWorkBehavior;
+export default useClickItemBehavior;

@@ -58,7 +58,7 @@ const Player: FC<Props> = ({audio, control,needsMiniPlayer, togglePlayerAppearan
   return (
     <Slide direction='up' in={!needsMiniPlayer} mountOnEnter unmountOnExit>
       <div className={styles.player}>
-        <img src="images/down-arrow.png" alt="" className={styles["hidden-button"]} onClick={togglePlayerAppearance} />
+        <img src="/images/down-arrow.png" alt="" className={styles["hidden-button"]} onClick={togglePlayerAppearance} />
         <img className={styles["album-art"]} src={audio.nowPlaying.artworkUrl} alt="" />
         <div className={styles["controls-wrapper"]}>
           <div className={styles["seek-bar-wrapper"]}>

@@ -10,7 +10,7 @@ function Work() {
   useEffect(() => {
     setVisibleHeader(true);
     setHeader(
-      <div onClick={() => navigate('../')} style={{cursor: "pointer", width: "max-content"}}>＜  戻る</div>
+      <div onClick={() => navigate('../')} style={{fontWeight: "bold", cursor: "pointer", width: "max-content"}}>＜  戻る</div>
     );
   }, [setVisibleHeader, setHeader]);
 
@@ -24,6 +24,7 @@ function Work() {
   const media = params.media;
   const group = params.group;
   let tree = params.tree;
+
   if (typeof params["*"] !== "undefined") {
     tree += "%2F" + params["*"].replaceAll('/', '%2F');
   }

@@ -4,6 +4,7 @@ import Home from 'pages/Home';
 import Library from 'pages/Library';
 import Work from 'pages/Work';
 import NotFound from 'pages/NotFound';
+import Viewer from 'pages/Viewer';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/library" element={<Library />} />
           <Route path="/works/:group/:media/:tree/*" element={<Work />} />
+          <Route path="/viewer" element={<Viewer/>} />
           <Route path="*" element={<NotFound />} />
           <Route path="/404" element={<NotFound />} />
         </Route>

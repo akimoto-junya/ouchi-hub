@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 import File from './File';
-import { useClickWorkBehavior, useWork } from '../hooks';
+import { useClickItemBehavior, useWork } from '../hooks';
 import styles from '../styles/Filer.module.css';
 import { getSourceURL, getFileImage, getFileType, isImageType } from '../services';
 import { DirectoryType } from '../types';
@@ -15,7 +15,7 @@ type Props = {
 const Filer: FC<Props> = ({ media, group, tree }) => {
   const work = useWork(media, group, tree);
   const audioPlayer = useContext(AudioPlayerContext);
-  const onClick = useClickWorkBehavior(work, audioPlayer);
+  const onClick = useClickItemBehavior(work, audioPlayer);
 
   if (typeof work === 'undefined') {
     return <></>;
@@ -31,7 +31,7 @@ const Filer: FC<Props> = ({ media, group, tree }) => {
         </div>
       </div>
       <ol className={styles.group}>
-        {
+        { // directory
           work.tree?.filter((item) => item.type === 'directory').map((item, index) => {
             const fileType: DirectoryType = "directory"
             return <File key={index} name={item.name}
@@ -39,7 +39,7 @@ const Filer: FC<Props> = ({ media, group, tree }) => {
               onClick={onClick({ fileType: fileType, filename: item.name })} />;
           }) ?? <></>
         }
-        {
+        { // files
           work.tree?.filter((item) => item.type === 'file').map((item, index) => {
             const fileType = getFileType(item.name);
             const imageURL = isImageType(fileType) ? getSourceURL(media, group, item.name) : getFileImage(fileType);

@@ -7,7 +7,7 @@ function Library() {
 
   useEffect(() => {
     setVisibleHeader(true);
-    setHeader(<div>Library</div>);
+    setHeader(<div>ライブラリ</div>);
   }, [setVisibleHeader, setHeader]);
 
   return (

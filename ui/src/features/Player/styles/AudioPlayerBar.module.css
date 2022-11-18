@@ -27,14 +27,19 @@
   margin: 10px 10px 20px 10px;
 }
 
+.info {
+  width: 300px;
+  margin: 0 10px;
+}
+
 .info-wrapper {
   height: 20px;
-  width: 200px;
-  margin: 10px;
+  width: 100%;
+  margin: 10px 0;
 }
 
 .name {
-  width: 200px;
+  width: 100%;
   font-weight: bold;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -42,7 +47,7 @@
 }
 
 .album {
-  width: 200px;
+  width: 100%;
   color: #aaaaaa;
   text-overflow: ellipsis;
   overflow: hidden;
