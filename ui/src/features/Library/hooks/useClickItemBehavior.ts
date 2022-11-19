@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { getFileType, getSourceURL, isAudioType, isDirectoryType } from '../services';
+import { getFileType, getSourceURL, isAudioType, isDirectoryType, isImageType, isVideoType } from '../services';
 import { WorkInfo } from '../types';
 import { Media, AudioQueue } from 'features/Player/types';
 
@@ -50,6 +50,10 @@ const useClickItemBehavior = (work?: WorkInfo, audioQueue?: AudioQueue) => {
       };
     } else if (isAudioType(fileType)) {
       return ClickAudioItem(work, filename, audioQueue);
+    } else if (isVideoType(fileType) || isImageType(fileType)) {
+      return () => {
+        navigate(`${window.location.pathname.replace('works', 'viewer')}/${filename}`);
+      };
     }
     return () => {};
   };

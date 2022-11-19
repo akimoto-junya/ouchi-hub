@@ -13,8 +13,8 @@ function App() {
         <Route path="/" element={<PageWrapper />}>
           <Route index element={<Home />} />
           <Route path="/library" element={<Library />} />
-          <Route path="/works/:group/:media/:tree/*" element={<Work />} />
-          <Route path="/viewer" element={<Viewer/>} />
+          <Route path="/works/:media/:group/:tree/*" element={<Work />} />
+          <Route path="/viewer/:media/:group/:tree/*" element={<Viewer/>} />
           <Route path="*" element={<NotFound />} />
           <Route path="/404" element={<NotFound />} />
         </Route>

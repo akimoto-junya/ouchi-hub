@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePageWrapperSetters } from 'components/layouts/PageWrapper';
-import { Box } from '@mui/material';
+import { getFileType, getSourceURL, isVideoType } from 'features/Library/services';
+import { MediaAddress } from 'utils/api';
 
 function Viewer() {
   const { setVisibleHeader, setHeader } = usePageWrapperSetters();
@@ -26,7 +27,7 @@ function Viewer() {
   useEffect(() => {
     setVisibleHeader(true);
     setHeader(
-      <div onClick={() => navigate('../')} style={{cursor: "pointer", width: "max-content"}}>＜  戻る</div>
+      <div onClick={() => navigate(-1)} style={{cursor: "pointer", width: "max-content"}}>＜  戻る</div>
     );
   }, [setVisibleHeader, setHeader]);
 
@@ -40,11 +41,17 @@ function Viewer() {
     }
   }, [hover])
 
-
+  const fileType = getFileType(tree);
 
   return (
     <>
-      <div onPointerOver={() => setHover(hover + 1)} style={{position: "fixed", width: "100%", height: "100px", top: "0"}}></div>
+      <div onPointerOver={() => setHover(hover + 1)} style={{position: "fixed", width: "100%", height: "100px", top: "0", zIndex: 100}}></div>
+      {isVideoType(fileType)
+        ? <video src={[MediaAddress, media, group, tree].join('/')} controls autoPlay
+                 style={{height: "100%", width: "100%", maxWidth: "100%", maxHeight: "100%", objectFit: "contain", margin: "auto"}}></video>
+        : <img src={[MediaAddress, media, group, tree].join('/')} alt=""
+              style={{height: "100%", width: "100%", maxWidth: "100%", maxHeight: "100%", objectFit: "contain", margin: "auto"}}/>
+      }
     </>
   );
 }

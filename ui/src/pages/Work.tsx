@@ -10,7 +10,7 @@ function Work() {
   useEffect(() => {
     setVisibleHeader(true);
     setHeader(
-      <div onClick={() => navigate('../')} style={{fontWeight: "bold", cursor: "pointer", width: "max-content"}}>＜  戻る</div>
+      <div onClick={() => navigate(-1)} style={{cursor: "pointer", width: "max-content"}}>＜  戻る</div>
     );
   }, [setVisibleHeader, setHeader]);
 

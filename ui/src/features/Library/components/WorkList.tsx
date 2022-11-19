@@ -8,7 +8,7 @@ import { groupBy } from '../services';
 import { WorkInfo } from '../types';
 
 function WorkList() {
-  const [works, method] = useWorks();
+  const [works, _] = useWorks();
   const [groups, setGroups] = useState<Map<string, WorkInfo[]>>(new Map());
   const [mediaColors, setMediaColors] = useState<Map<string, Color>>(new Map());
 

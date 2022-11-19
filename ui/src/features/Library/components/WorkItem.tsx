@@ -13,7 +13,7 @@ type Props = {
 const WorkItem: FC<Props> = ({ work: { title, group, media, imageURL }, mediaColor }) => {
   const navigate = useNavigate();
   const toWorkPage = () => {
-    navigate('/works/' + `${group}/${media}/${title}`);
+    navigate('/works/' + `${media}/${group}/${title}`);
   };
 
   return (

@@ -13,7 +13,7 @@ DB_ADDRESS=db:6379
 ```
 
 ```bash
-$ docker compose up -d
+docker compose up -d
 
 ```
 
