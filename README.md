@@ -48,7 +48,7 @@ http {
     disable_symlinks off;
     server {
         listen 80;
-        server_name 192.168.1.100;
+        server_name <address>;
         root /var/www/html;
         index index.html index.htm;
 
