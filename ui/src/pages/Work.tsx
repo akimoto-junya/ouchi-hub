@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { usePageWrapperSetters } from 'components/layouts/PageWrapper';
+import { styled } from '@mui/material/styles';
+import { usePageWrapperInfo } from 'components/layouts/PageWrapper';
 import { Filer } from 'features/Library';
 
+// Header の有無による空白
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 function Work() {
-  const { setVisibleHeader, setHeader } = usePageWrapperSetters();
+  const { setVisibleHeader, setHeader } = usePageWrapperInfo();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,9 +34,10 @@ function Work() {
   }
 
   return (
-    <>
+    <div style={{height: "100vh", display: "flex", flexDirection: "column"}}>
+      <Offset />
       <Filer media={media} group={group} tree={tree} />
-    </>
+    </div>
   );
 }
 
