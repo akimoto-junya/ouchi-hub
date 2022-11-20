@@ -3,7 +3,7 @@ services:
   server:
     build: ./server
     volumes:
-      - ./ui/build:/var/www
+      - ./ui/build:/var/www/html
       - ${HOST_MEDIA_PATH}:/${MEDIA_PATH}
     ports:
       - "8000:80"
