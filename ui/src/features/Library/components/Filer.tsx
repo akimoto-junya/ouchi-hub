@@ -36,7 +36,7 @@ const Filer: FC<Props> = ({ media, group, tree }) => {
             const fileType: DirectoryType = "directory"
             return <File key={index} name={item.name}
               fileType={fileType} imageURL={getFileImage(fileType)}
-              onClick={onClick({ fileType: fileType, filename: item.name })} />;
+              onClick={onClick({ fileType: fileType, filename: window.location.pathname + "%2F" + item.name })} />;
           }) ?? <></>
         }
         { // files
