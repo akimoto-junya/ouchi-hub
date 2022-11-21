@@ -1,21 +1,20 @@
 package service
 
 import (
-	"github.com/go-redis/redis"
-	"os"
+    "github.com/go-redis/redis"
+    _ "embed"
 )
 
+//go:embed media_url.txt
 var MEDIA_URL string
+//go:embed db_address.txt
 var DB_ADDRESS string
 
 var Client *redis.Client
 
 func init() {
-	MEDIA_URL = os.Getenv("MEDIA_PATH")
-	DB_ADDRESS = os.Getenv("DB_ADDRESS")
-
-	db := redis.NewClient(&redis.Options{
-		Addr: DB_ADDRESS,
-	})
-	Client = db
+    db := redis.NewClient(&redis.Options{
+        Addr: DB_ADDRESS,
+    })
+    Client = db
 }

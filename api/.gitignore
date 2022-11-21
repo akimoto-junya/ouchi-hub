@@ -16,3 +16,7 @@ ouchi-hub
 # vendor/
 temp/
 tmp/
+
+# embed
+media_url.txt
+db_address.txt

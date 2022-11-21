@@ -23,16 +23,18 @@ services:
 
   api:
     build: ./api
-    command: ash -c "air -c ./air.toml"
+    working_dir: /home/api
+    command: ash -c "echo -n $$MEDIA_PATH > service/media_url.txt &&
+                     echo -n $$DB_ADDRESS > service/db_address.txt &&
+                     air -c ./air.toml"
     volumes:
       - ./api:/home/api
       - ${HOST_MEDIA_PATH}:/${MEDIA_PATH}
-    working_dir: /home/api
     ports:
       - "3000:3000"
     environment:
       - DB_ADDRESS
       - MEDIA_PATH
+
   db:
     image: redis:7.0.5-alpine
-
