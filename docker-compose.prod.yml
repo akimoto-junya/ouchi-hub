@@ -2,20 +2,22 @@ version: '3'
 services:
   ui:
     image: node:18.9.0-alpine3.15
+    working_dir: /home/node
     command: ash -c "npm install && npm run build"
     volumes:
         - ./ui:/home/node
-    working_dir: /home/node
     environment:
       - REACT_APP_API_ADDRESS=$API_ADDRESS
       - REACT_APP_MEDIA_ADDRESS=$MEDIA_ADDRESS
 
   api:
     build: ./api
-    command: ash -c "go build"
+    working_dir: /home/api
+    command: ash -c "echo -n $$MEDIA_PATH > service/media_url.txt &&
+                     echo -n $$DB_ADDRESS > service/db_address.txt &&
+                     go build"
     volumes:
       - ./api:/home/api
-    working_dir: /home/api
     environment:
       - DB_ADDRESS
       - MEDIA_PATH
