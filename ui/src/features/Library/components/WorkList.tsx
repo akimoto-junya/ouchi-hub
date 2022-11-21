@@ -22,7 +22,9 @@ function WorkList() {
       }
     });
     setMediaColors(colors);
-
+    works.sort((a, b) => a.title < b.title? -1 : 1);
+    works.sort((a, b) => a.group < b.group? -1 : 1);
+    works.sort((a, b) => a.media < b.media? -1 : 1);
     setGroups(groupBy(works, (w) => w.group));
   }, [works]);
 
