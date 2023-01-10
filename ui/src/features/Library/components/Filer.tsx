@@ -43,9 +43,11 @@ const Filer: FC<Props> = ({ media, group, tree }) => {
           work.tree?.filter((item) => item.type === 'file').map((item, index) => {
             const fileType = getFileType(item.name);
             const imageURL = isImageType(fileType) ? getSourceURL(media, group, item.name) : getFileImage(fileType);
-            return <File key={index} name={item.name}
-              fileType={fileType} imageURL={imageURL}
-              onClick={onClick({ fileType, filename: item.name })} />;
+            return (
+              <File key={index} name={item.name}
+                    fileType={fileType} imageURL={imageURL}
+                    onClick={onClick({ fileType, filename: item.name })} />
+            );
           }) ?? <></>
         }
       </ol>
